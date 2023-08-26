@@ -180,4 +180,44 @@ def getHousehold():
     # Return household as json
     return household.as_dict()
 
-# TODO Create, Update, Delete for Household
+@app.route("/api/household", methods=["POST", "OPTIONS"])
+def createHousehold():
+    print(request.json)
+
+    name = request.json.get("name")
+    street_address = request.json.get("address")
+    city = request.json.get("city")
+    state = request.json.get("state")
+    zip = request.json.get("zip")
+    notes = request.json.get("notes")    
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Create new household class
+    newHousehold = Household()
+    newHousehold.name = name
+    newHousehold.street_address = street_address
+    newHousehold.city = city
+    newHousehold.state = state
+    newHousehold.zip = zip
+    newHousehold.notes = notes
+
+    # Add household to DB
+    db.session.add(newHousehold)
+    db.session.commit()
+
+    # Create new record for user household class
+    newUserHousehold = UserHousehold()
+    newUserHousehold.userID = g.user.id
+    newUserHousehold.householdID = newHousehold.id
+
+    # Add user household to DB
+    db.session.add(newUserHousehold)
+    db.session.commit()
+
+    # Return household as json
+    return newHousehold.as_dict()
+
+# TODO Update, Delete for Household

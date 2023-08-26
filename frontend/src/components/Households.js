@@ -17,7 +17,7 @@ export default function Households() {
   const [households, setHouseholds] = useState([]);
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); getUserHouseholds();};
   const handleShow = () => setShow(true);
 
   async function getUserHouseholds() {
@@ -27,8 +27,11 @@ export default function Households() {
     setIsLoading(false);
   }
 
-  async function createHousehold(){
-    //TODO api call to create household
+  async function createHousehold(data){
+    let household = await JoblyApi.createHousehold(data);
+    setIsLoading(false);
+    console.log("Household created: " + household.id);
+    handleClose();    
   }
 
   useEffect(() => {    
@@ -85,7 +88,12 @@ export default function Households() {
         </Row>
       </Container>
 
-      <HouseholdModal show={show} handleClose={handleClose} createHousehold={createHousehold} />
+      <HouseholdModal 
+        show={show} 
+        handleClose={handleClose} 
+        createHousehold={(data) => createHousehold(data)} 
+        setIsLoading={setIsLoading}
+      />
     </>
   );
 }

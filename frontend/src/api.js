@@ -99,7 +99,10 @@ export default class JoblyApi {
     return res;
   }
 
-
+  static async createHousehold(data){
+    let res = await this.request("household", data, "post");
+    return res;
+  }
 
   
 }

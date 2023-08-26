@@ -61,6 +61,7 @@ class Household(db.Model):
     __tablename__ = 'households'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String)
     street_address = db.Column(db.String)
     city = db.Column(db.String)
     state = db.Column(db.String)
