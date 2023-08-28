@@ -30,8 +30,6 @@ export default class JoblyApi {
       q = axios.post(`${BASE_URL}/${endpoint}`, { ...params });
     } else if (verb === "patch") {
       q = axios.patch(`${BASE_URL}/${endpoint}`, { ...params });
-    } else if (verb === "delete") {
-      q = axios.delete(`${BASE_URL}/${endpoint}`, { ...params });
     }
 
     try {
@@ -110,7 +108,7 @@ export default class JoblyApi {
   }
 
   static async deleteHousehold(data) {
-    let res = await this.request("household", data, "delete");
+    let res = await this.request("household/delete", data, "post");
     return res;
   }
 }

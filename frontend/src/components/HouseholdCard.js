@@ -10,11 +10,12 @@ import Button from "react-bootstrap/esm/Button";
 import ConfirmModal from "./ConfirmModal";
 
 export default function HouseholdCard(props) {
-  const { householdId, name, address, notes } = props;
+  const { householdId, name, address, notes, getUserHouseholds } = props;
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
     setShow(false);
+    getUserHouseholds();
   };
   const handleShow = () => setShow(true);
 

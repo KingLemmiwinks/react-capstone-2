@@ -15,8 +15,28 @@ export default function Households() {
   const [isLoading, setIsLoading] = useState(true);
   const [households, setHouseholds] = useState([]);
   const [show, setShow] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    notes: "",
+    errors: [],
+  });
 
-  const handleClose = () => {setShow(false); getUserHouseholds();};
+  const handleClose = () => {
+    setShow(false);  
+    getUserHouseholds();
+    setFormData({
+    name: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    notes: "",
+    errors: []})
+  };
   const handleShow = () => setShow(true);
 
   async function getUserHouseholds() {
@@ -80,6 +100,7 @@ export default function Households() {
                 key={uuidv4()}
                 name={household?.info?.name}
                 notes={household?.info?.notes}
+                getUserHouseholds={getUserHouseholds}
               />
             ))}
             <div>{households.length <= 0 && <p>No Households Yet!</p>}</div>
@@ -92,6 +113,8 @@ export default function Households() {
         handleClose={handleClose}
         createHousehold={(data) => createHousehold(data)}
         setIsLoading={setIsLoading}
+        formData={formData}
+        setFormData={setFormData}
       />
     </>
   );

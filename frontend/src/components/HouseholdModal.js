@@ -3,16 +3,8 @@ import Modal from "react-bootstrap/Modal";
 import HouseholdForm from "./HouseholdForm";
 
 export default function HouseholdModal(props) {
-    const { handleClose, show, createHousehold, setIsLoading } = props;
-    const [formData, setFormData] = useState({
-      name: "",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
-      notes: "",
-      errors: [],
-    });
+    const { handleClose, show, createHousehold, setIsLoading, formData, setFormData } = props;
+    
 
     const changeHandler = (e) => {
       const { name, value } = e.target;

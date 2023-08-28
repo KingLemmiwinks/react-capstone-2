@@ -247,7 +247,7 @@ def updateHousehold():
     # Return household as json
     return household.as_dict()
 
-@app.route("/api/household", methods=["DELETE", "OPTIONS"])
+@app.route("/api/household/delete", methods=["POST", "OPTIONS"])
 def deleteHousehold():
     # TODO this isn't really working. The front is throwing a 415 unsupported media type whenever trying to get to this endpoint
 
@@ -260,14 +260,11 @@ def deleteHousehold():
     
     # Get household by id
     household = Household.query.filter(Household.id == householdId).one()
-
-    # Get userhousehold by householdID
-    userHousehold = UserHousehold.query.filter(UserHousehold.householdID == householdId).one()
     
     # Delete household from userHousehold
-    db.session.delete(userHousehold)
+    # db.session.delete(userHousehold)
     db.session.delete(household)
     db.session.commit()
 
-    # Return true if complete
-    return True
+    # Return if complete
+    return "Deleted"
