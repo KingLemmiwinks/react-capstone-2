@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
-import JoblyApi from "../api";
+import CapstoneApi from "../api";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
@@ -23,7 +23,7 @@ export default function HouseholdCard(props) {
     let data = {
       householdId: householdId,
     };
-    var success = await JoblyApi.deleteHousehold(data);
+    var success = await CapstoneApi.deleteHousehold(data);
     console.log("Household deleted: " + success);
     handleClose();
   }

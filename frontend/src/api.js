@@ -5,7 +5,7 @@ const BASE_URL = process.env.BASE_URL || "/api";
 
 
 
-export default class JoblyApi {
+export default class CapstoneApi {
   static async request(
     endpoint,
     params = {},
@@ -25,7 +25,7 @@ export default class JoblyApi {
     axios.defaults.headers.common = { "Content-Type": "application/json" };
 
     if (verb === "get") {
-      q = axios.get(`${BASE_URL}/${endpoint}`, {params: { ...params } });
+      q = axios.get(`${BASE_URL}/${endpoint}`, { params: { ...params } });
     } else if (verb === "post") {
       q = axios.post(`${BASE_URL}/${endpoint}`, { ...params });
     } else if (verb === "patch") {
@@ -109,6 +109,28 @@ export default class JoblyApi {
 
   static async deleteHousehold(data) {
     let res = await this.request("household/delete", data, "post");
+    return res;
+  }
+
+  // SELLER'S EXPERTISE ROUTES
+
+  static async getSellerExpertise(householdId) {
+    let res = await this.request("sellerExpertise", { householdId });
+    return res;
+  }
+
+  static async createSellerExpertise(data) {
+    let res = await this.request("sellerExpertise", data, "post");
+    return res;
+  }
+
+  static async updateSellerExpertise(data) {
+    let res = await this.request("sellerExpertise", data, "patch");
+    return res;
+  }
+
+  static async deleteSellerExpertise(data) {
+    let res = await this.request("sellerExpertise/delete", data, "post");
     return res;
   }
 }

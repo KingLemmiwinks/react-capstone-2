@@ -8,7 +8,7 @@ export default function Roof(props) {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <Card.Title>Some roof data here</Card.Title>
+        <Card.Title>Some roof data here {householdId}</Card.Title>
         <Card.Text>
           More info
           <br />

@@ -8,7 +8,7 @@ export default function Associations(props) {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <Card.Title>Some Associations data here</Card.Title>
+        <Card.Title>Some Associations data here {householdId}</Card.Title>
         <Card.Text>
           More info
           <br />

@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-import JoblyApi from "./api";
+import CapstoneApi from "./api";
 
 export default function Login({ setToken }) {
   const history = useHistory();
@@ -50,7 +50,7 @@ export default function Login({ setToken }) {
 
     try {
       // RETURN userID
-      token = await JoblyApi[endpoint](data);
+      token = await CapstoneApi[endpoint](data);
     } catch (errors) {
       return setFormData((data) => ({ ...data, errors }));
     }

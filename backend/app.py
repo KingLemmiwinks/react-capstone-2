@@ -2,7 +2,7 @@
 import os
 from flask import Flask, session, flash, g, request, json
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, UserHousehold, Household
+from models import db, connect_db, User, UserHousehold, Household, SellerExpertise
 from sqlalchemy.exc import IntegrityError
 
 # API_BASE_URL = "URL"
@@ -268,3 +268,77 @@ def deleteHousehold():
 
     # Return if complete
     return "Deleted"
+
+############################## SELLER EXPERTISE ROUTES ##############################
+
+# Get
+@app.route("/api/sellerExpertise", methods=["GET", "OPTIONS"])
+def getSellerExpertise():
+    print(request.args)
+
+    householdId = request.args.get("householdId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get seller's expertise by id
+    # query by house id, if result set has a row, return row. else, return empty {}
+
+    expertiseRowCount = SellerExpertise.query.filter(SellerExpertise.id == householdId).count()
+
+    if expertiseRowCount > 0:
+        sellerExpertise = SellerExpertise.query.filter(SellerExpertise.id == householdId).one()
+        return sellerExpertise.as_dict()
+
+    # Return household as json
+    return ""
+
+# Update
+@app.route("/api/sellerExpertise", methods=["PATCH", "OPTIONS"])
+def updateSellerExpertise():
+    print(request.json)
+    householdId = request.json.get("id")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get household by id
+    sellerExpertise = SellerExpertise.query.filter(SellerExpertise.id == householdId).one()
+    
+    # Update household class
+    sellerExpertise.hasExpertise = request.json.get("hasExpertise")
+    sellerExpertise.isLandlord = request.json.get("isLandlord")
+    sellerExpertise.isRealEstateLicensee = request.json.get("isRealEstateLicensee")
+    sellerExpertise.notes = request.json.get("notes")  
+
+    # Update household in DB
+    db.session.commit()
+
+    # Return household as json
+    return sellerExpertise.as_dict()
+
+# Create
+@app.route("/api/sellerExpertise", methods=["POST", "OPTIONS"])
+def createSellerExpertise():
+    print(request.json)
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Create new seller expertise class
+    newSellerExpertise = SellerExpertise()
+    newSellerExpertise.householdID = request.json.get("householdId")
+    newSellerExpertise.hasExpertise = request.json.get("hasExpertise")
+    newSellerExpertise.isLandlord = request.json.get("isLandlord")
+    newSellerExpertise.isRealEstateLicensee = request.json.get("isRealEstateLicensee")
+    newSellerExpertise.notes = request.json.get("notes")  
+
+    # Add seller expertise to DB
+    db.session.add(newSellerExpertise)
+    db.session.commit()
+
+    # Return household as json
+    return newSellerExpertise.as_dict()

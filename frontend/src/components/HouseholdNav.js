@@ -3,7 +3,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Container from "react-bootstrap/Container";
 import Household from "./Household";
-import SellersExpertise from "./SellersExpertise";
+import SellerExpertise from "./SellerExpertise";
 import OwnershipOccupancy from "./OwnershipOccupancy";
 import Associations from "./Associations";
 import Roof from "./Roof";
@@ -21,8 +21,8 @@ export default function HouseholdNav() {
         <Tab eventKey="household" title="Basic Info">
           <Household householdId={householdId} />
         </Tab>
-        <Tab eventKey="sellersExpertise" title="Sellers Expertise">
-          <SellersExpertise householdId={householdId} />
+        <Tab eventKey="sellerExpertise" title="Sellers Expertise">
+          <SellerExpertise householdId={householdId} />
         </Tab>
         <Tab eventKey="ownershipOccupancy" title="Ownership & Occupancy">
           <OwnershipOccupancy householdId={householdId} />

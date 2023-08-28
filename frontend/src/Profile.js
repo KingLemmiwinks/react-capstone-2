@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-import JoblyApi from "./api";
+import CapstoneApi from "./api";
 
 const MESSAGE_SHOW_PERIOD_IN_MSEC = 3000;
 
@@ -38,7 +38,7 @@ export default function Profile() {
       };
 
       let username = userForm.username;
-      let updatedUser = await JoblyApi.saveProfile(username, profileData);
+      let updatedUser = await CapstoneApi.saveProfile(username, profileData);
       console.log("UPDATED USER", updatedUser);
       setUserForm((f) => ({
         ...f,

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import UserContext from "../UserContext";
-import JoblyApi from "../api";
+import CapstoneApi from "../api";
 import HouseholdCard from "./HouseholdCard";
 import HouseholdModal from "./HouseholdModal";
 
@@ -40,7 +40,7 @@ export default function Households() {
   const handleShow = () => setShow(true);
 
   async function getUserHouseholds() {
-    let userHouseholds = await JoblyApi.getUserHouseholds(currentUser.id);    
+    let userHouseholds = await CapstoneApi.getUserHouseholds(currentUser.id);    
 
     let detailedHouseholds = await Promise.all(
       userHouseholds.map((household) => getHouseholdInfo(household))
@@ -51,13 +51,13 @@ export default function Households() {
   }
 
   async function getHouseholdInfo(household){
-    let householdInfo = await JoblyApi.getHousehold(household.householdID);
+    let householdInfo = await CapstoneApi.getHousehold(household.householdID);
     household["info"] = householdInfo;
     return household;
   }
 
   async function createHousehold(data){
-    let household = await JoblyApi.createHousehold(data);
+    let household = await CapstoneApi.createHousehold(data);
     setIsLoading(false);
     console.log("Household created: " + household.id);
     handleClose();    

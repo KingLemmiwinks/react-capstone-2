@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { decode } from "jsonwebtoken";
 import { ClipLoader } from "react-spinners";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Routes from "./Routes";
-import JoblyApi from "./api";
+import CapstoneApi from "./api";
 import UserContext from "./UserContext";
 import AppNav from "./AppNav";
 
@@ -19,7 +18,7 @@ export default function App() {
     async function getCurrentUser() {
       try {
         let userId = token;
-        let currentUser = await JoblyApi.getCurrentUser(userId);
+        let currentUser = await CapstoneApi.getCurrentUser(userId);
         setCurrentUser(currentUser);
       } catch (err) {
         setCurrentUser(null);

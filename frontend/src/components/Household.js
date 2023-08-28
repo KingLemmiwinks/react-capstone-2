@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import JoblyApi from "../api";
+import CapstoneApi from "../api";
 import HouseholdForm from "./HouseholdForm";
 
 export default function Household(props) {
   const { householdId } = props;
   const [isLoading, setIsLoading] = useState(true);
-  const [household, setHousehold] = useState({});
+  const [household, setHousehold] = useState(null);
   const [formData, setFormData] = useState();
 
   async function getHousehold() {
-    let household = await JoblyApi.getHousehold(householdId);
+    let household = await CapstoneApi.getHousehold(householdId);
     setHousehold(household);
     setIsLoading(false);
   }
 
   async function updateHousehold(data) {
-    let household = await JoblyApi.updateHousehold(data);
+    let household = await CapstoneApi.updateHousehold(data);
     setHousehold(household);
     setIsLoading(false);
     console.log("Household updated: " + household.id);
@@ -55,13 +53,13 @@ export default function Household(props) {
 
   useEffect(() => {
     setFormData({
-      id: household.id,
-      name: household.name,
-      address: household.street_address,
-      city: household.city,
-      state: household.state,
-      zip: household.zip,
-      notes: household.notes,
+      id: household?.id,
+      name: household?.name,
+      address: household?.street_address,
+      city: household?.city,
+      state: household?.state,
+      zip: household?.zip,
+      notes: household?.notes,
       errors: []
     });
   }, [household])

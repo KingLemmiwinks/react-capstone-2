@@ -8,7 +8,7 @@ export default function OwnershipOccupancy(props) {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <Card.Title>Some ownership data here</Card.Title>
+        <Card.Title>Some ownership data here {householdId}</Card.Title>
         <Card.Text>
           More info
           <br />

@@ -8,7 +8,7 @@ export default function Basement(props) {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <Card.Title>Some Basement data here</Card.Title>
+        <Card.Title>Some Basement data here {householdId}</Card.Title>
         <Card.Text>
           More info
           <br />
