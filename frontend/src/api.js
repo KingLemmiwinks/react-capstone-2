@@ -25,13 +25,13 @@ export default class JoblyApi {
     axios.defaults.headers.common = { "Content-Type": "application/json" };
 
     if (verb === "get") {
-      q = axios.get(`${BASE_URL}/${endpoint}`, {
-        params: { ...params },
-      });
+      q = axios.get(`${BASE_URL}/${endpoint}`, {params: { ...params } });
     } else if (verb === "post") {
       q = axios.post(`${BASE_URL}/${endpoint}`, { ...params });
     } else if (verb === "patch") {
       q = axios.patch(`${BASE_URL}/${endpoint}`, { ...params });
+    } else if (verb === "delete") {
+      q = axios.delete(`${BASE_URL}/${endpoint}`, { ...params });
     }
 
     try {
@@ -99,10 +99,18 @@ export default class JoblyApi {
     return res;
   }
 
-  static async createHousehold(data){
+  static async createHousehold(data) {
     let res = await this.request("household", data, "post");
     return res;
   }
 
-  
+  static async updateHousehold(data) {
+    let res = await this.request("household", data, "patch");
+    return res;
+  }
+
+  static async deleteHousehold(data) {
+    let res = await this.request("household", data, "delete");
+    return res;
+  }
 }

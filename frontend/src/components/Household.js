@@ -1,28 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import JoblyApi from "../api";
+import HouseholdForm from "./HouseholdForm";
 
 export default function Household(props) {
   const { householdId } = props;
+  const [isLoading, setIsLoading] = useState(true);
+  const [household, setHousehold] = useState({});
+  const [formData, setFormData] = useState();
+
+  async function getHousehold() {
+    let household = await JoblyApi.getHousehold(householdId);
+    setHousehold(household);
+    setIsLoading(false);
+  }
+
+  async function updateHousehold(data) {
+    let household = await JoblyApi.updateHousehold(data);
+    setHousehold(household);
+    setIsLoading(false);
+    console.log("Household updated: " + household.id);
+  }
+
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setFormData((fdata) => ({
+      ...fdata,
+      [name]: value,
+    }));
+  };
+
+   const submitHandler = async (e) => {
+     e.preventDefault();
+     setIsLoading(true);
+     let data = {
+       id: formData.id,
+       name: formData.name,
+       address: formData.address,
+       city: formData.city,
+       state: formData.state,
+       zip: formData.zip,
+       notes: formData.notes,
+     };
+
+     try {
+       updateHousehold(data);
+     } catch (errors) {
+       setIsLoading(false);
+       return setFormData((data) => ({ ...data, errors }));
+     }
+   };
+
+  useEffect(() => {
+    setFormData({
+      id: household.id,
+      name: household.name,
+      address: household.street_address,
+      city: household.city,
+      state: household.state,
+      zip: household.zip,
+      notes: household.notes,
+      errors: []
+    });
+  }, [household])
   
+  useEffect(() => {
+    getHousehold();
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading &hellip;</p>;
+  }
   return (
     <Card className="mb-3">
       <Card.Body>
-        <Card.Title>Some household data here</Card.Title>
-        <Card.Text>
-          More info
-          <br />
-          More info
-          <Button
-            className="d-block ml-auto"
-            //disabled={appliedFor}
-            //onClick={() => applyHandler(id)}
-            variant="danger"
-            type="button"
-          >
-            Button text here
-          </Button>
-        </Card.Text>
+        <HouseholdForm 
+          submitHandler={submitHandler}
+          changeHandler={changeHandler}
+          formData={formData}
+          buttonText={"Save Changes"}
+        />
       </Card.Body>
     </Card>
   );

@@ -142,6 +142,10 @@ def getCurrentUser():
 
 ############################## HOUSEHOLD ROUTES ##############################
 
+def row2dict(r):
+    return {c.name: str(getattr(r, c.name)) for c in r.__table__.columns}
+
+
 @app.route("/api/households", methods=["GET", "OPTIONS"])
 def getUserHouseholds():
     print(request.args)
@@ -153,7 +157,11 @@ def getUserHouseholds():
         return None
     
     # Get list of households for user
-    households = UserHousehold.query.filter(UserHousehold.userID == userId).all()
+    households = UserHousehold.query\
+        .filter(UserHousehold.userID == userId)\
+        .all()
+        # .join(Household, UserHousehold.householdID == Household.id)\
+        # .add_columns(Household.name, Household.street_address, Household.city, Household.state, Household.zip, Household.photo, Household.notes)\
 
     if not households:
         return []
@@ -183,13 +191,6 @@ def getHousehold():
 @app.route("/api/household", methods=["POST", "OPTIONS"])
 def createHousehold():
     print(request.json)
-
-    name = request.json.get("name")
-    street_address = request.json.get("address")
-    city = request.json.get("city")
-    state = request.json.get("state")
-    zip = request.json.get("zip")
-    notes = request.json.get("notes")    
     
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -197,12 +198,12 @@ def createHousehold():
     
     # Create new household class
     newHousehold = Household()
-    newHousehold.name = name
-    newHousehold.street_address = street_address
-    newHousehold.city = city
-    newHousehold.state = state
-    newHousehold.zip = zip
-    newHousehold.notes = notes
+    newHousehold.name = request.json.get("name")
+    newHousehold.street_address = request.json.get("address")
+    newHousehold.city = request.json.get("city")
+    newHousehold.state = request.json.get("state")
+    newHousehold.zip = request.json.get("zip")
+    newHousehold.notes = request.json.get("notes")  
 
     # Add household to DB
     db.session.add(newHousehold)
@@ -220,4 +221,53 @@ def createHousehold():
     # Return household as json
     return newHousehold.as_dict()
 
-# TODO Update, Delete for Household
+@app.route("/api/household", methods=["PATCH", "OPTIONS"])
+def updateHousehold():
+    print(request.json)
+    householdId = request.json.get("id")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get household by id
+    household = Household.query.filter(Household.id == householdId).one()
+    
+    # Update household class
+    household.name = request.json.get("name")
+    household.street_address = request.json.get("address")
+    household.city = request.json.get("city")
+    household.state = request.json.get("state")
+    household.zip = request.json.get("zip")
+    household.notes = request.json.get("notes")  
+
+    # Update household in DB
+    db.session.commit()
+
+    # Return household as json
+    return household.as_dict()
+
+@app.route("/api/household", methods=["DELETE", "OPTIONS"])
+def deleteHousehold():
+    # TODO this isn't really working. The front is throwing a 415 unsupported media type whenever trying to get to this endpoint
+
+    print(request.json)
+    householdId = request.json.get("householdId")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get household by id
+    household = Household.query.filter(Household.id == householdId).one()
+
+    # Get userhousehold by householdID
+    userHousehold = UserHousehold.query.filter(UserHousehold.householdID == householdId).one()
+    
+    # Delete household from userHousehold
+    db.session.delete(userHousehold)
+    db.session.delete(household)
+    db.session.commit()
+
+    # Return true if complete
+    return True

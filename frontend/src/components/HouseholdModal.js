@@ -1,9 +1,6 @@
-import React, { useContext, useState } from "react";
-import Button from "react-bootstrap/Button";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
-import UserContext from "../UserContext";
+import HouseholdForm from "./HouseholdForm";
 
 export default function HouseholdModal(props) {
     const { handleClose, show, createHousehold, setIsLoading } = props;
@@ -50,71 +47,14 @@ export default function HouseholdModal(props) {
         <Modal.Header closeButton>
           <Modal.Title>Create New Household</Modal.Title>
         </Modal.Header>
-        <Form className="mt-2" onSubmit={submitHandler}>
-          <Modal.Body>
-            <Form.Group className="w-100">
-              <Form.Label>Household Name</Form.Label>
-              <Form.Control
-                className="mb-2"
-                onChange={changeHandler}
-                type="text"
-                name="name"
-                value={formData.name}
-              />
-              <Form.Label>Street Address</Form.Label>
-              <Form.Control
-                className="mb-2"
-                onChange={changeHandler}
-                type="text"
-                name="address"
-                value={formData.address}
-              />
-              <Form.Label>City</Form.Label>
-              <Form.Control
-                className="mb-2"
-                onChange={changeHandler}
-                type="text"
-                name="city"
-                value={formData.city}
-              />
-              <Form.Label>State</Form.Label>
-              <Form.Control
-                className="mb-2"
-                onChange={changeHandler}
-                type="text"
-                name="state"
-                value={formData.state}
-              />
-              <Form.Label>Zip</Form.Label>
-              <Form.Control
-                className="mb-2"
-                onChange={changeHandler}
-                type="number"
-                name="zip"
-                value={formData.zip}
-              />
-              <Form.Label>Notes</Form.Label>
-              <Form.Control
-                className="mb-2"
-                onChange={changeHandler}
-                type="textarea"
-                name="notes"
-                value={formData.notes}
-              />
-            </Form.Group>
-            {formData.errors.length > 0 && (
-              <Alert type="danger" messages={formData.errors} />
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="info" type="submit">
-              Create
-            </Button>
-          </Modal.Footer>
-        </Form>
+        <Modal.Body>
+          <HouseholdForm
+            submitHandler={submitHandler}
+            changeHandler={changeHandler}
+            formData={formData}
+            buttonText={"Create"}
+          />
+        </Modal.Body>
       </Modal>
     );
 }

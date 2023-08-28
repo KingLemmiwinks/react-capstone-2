@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import { v4 as uuidv4 } from "uuid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -21,10 +20,20 @@ export default function Households() {
   const handleShow = () => setShow(true);
 
   async function getUserHouseholds() {
-    let userHouseholds = await JoblyApi.getUserHouseholds(currentUser.id);
-    console.log("Households:" + userHouseholds);
-    setHouseholds(userHouseholds);
+    let userHouseholds = await JoblyApi.getUserHouseholds(currentUser.id);    
+
+    let detailedHouseholds = await Promise.all(
+      userHouseholds.map((household) => getHouseholdInfo(household))
+    );
+
+    setHouseholds(detailedHouseholds);
     setIsLoading(false);
+  }
+
+  async function getHouseholdInfo(household){
+    let householdInfo = await JoblyApi.getHousehold(household.householdID);
+    household["info"] = householdInfo;
+    return household;
   }
 
   async function createHousehold(data){
@@ -34,8 +43,10 @@ export default function Households() {
     handleClose();    
   }
 
+  
   useEffect(() => {    
     getUserHouseholds();
+    
   }, []);
 
   if (isLoading) {
@@ -64,34 +75,22 @@ export default function Households() {
           <Col md={8}>
             {households.map((household) => (
               <HouseholdCard
-                address={household.address}
-                handle={household.handle}
+                address={household?.info?.street_address}
+                householdId={household?.householdID}
                 key={uuidv4()}
-                name={household.name}
+                name={household?.info?.name}
+                notes={household?.info?.notes}
               />
             ))}
             <div>{households.length <= 0 && <p>No Households Yet!</p>}</div>
-
-            <HouseholdCard
-              address={"123 test ave"}
-              handle={"1"}
-              key={uuidv4()}
-              name={"test home"}
-            />
-            <HouseholdCard
-              address={"456 test ave"}
-              handle={"2"}
-              key={uuidv4()}
-              name={"test home 2"}
-            />
           </Col>
         </Row>
       </Container>
 
-      <HouseholdModal 
-        show={show} 
-        handleClose={handleClose} 
-        createHousehold={(data) => createHousehold(data)} 
+      <HouseholdModal
+        show={show}
+        handleClose={handleClose}
+        createHousehold={(data) => createHousehold(data)}
         setIsLoading={setIsLoading}
       />
     </>
