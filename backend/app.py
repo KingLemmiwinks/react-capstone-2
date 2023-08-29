@@ -2,7 +2,7 @@
 import os
 from flask import Flask, session, flash, g, request, json
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, UserHousehold, Household, SellerExpertise
+from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy
 from sqlalchemy.exc import IntegrityError
 
 # API_BASE_URL = "URL"
@@ -271,7 +271,6 @@ def deleteHousehold():
 
 ############################## SELLER EXPERTISE ROUTES ##############################
 
-# Get
 @app.route("/api/sellerExpertise", methods=["GET", "OPTIONS"])
 def getSellerExpertise():
     print(request.args)
@@ -282,7 +281,7 @@ def getSellerExpertise():
         flash("Access unauthorized.", "danger")
         return None
     
-    # Get seller's expertise by id
+    # Get sellerExpertise by id
     # query by house id, if result set has a row, return row. else, return empty {}
 
     expertiseRowCount = SellerExpertise.query.filter(SellerExpertise.id == householdId).count()
@@ -291,10 +290,9 @@ def getSellerExpertise():
         sellerExpertise = SellerExpertise.query.filter(SellerExpertise.id == householdId).one()
         return sellerExpertise.as_dict()
 
-    # Return household as json
+    # Return sellerExpertise as json
     return ""
 
-# Update
 @app.route("/api/sellerExpertise", methods=["PATCH", "OPTIONS"])
 def updateSellerExpertise():
     print(request.json)
@@ -304,22 +302,21 @@ def updateSellerExpertise():
         flash("Access unauthorized.", "danger")
         return None
     
-    # Get household by id
+    # Get sellerExpertise by householdId
     sellerExpertise = SellerExpertise.query.filter(SellerExpertise.id == householdId).one()
     
-    # Update household class
+    # Update sellerExpertise class
     sellerExpertise.hasExpertise = request.json.get("hasExpertise")
     sellerExpertise.isLandlord = request.json.get("isLandlord")
     sellerExpertise.isRealEstateLicensee = request.json.get("isRealEstateLicensee")
     sellerExpertise.notes = request.json.get("notes")  
 
-    # Update household in DB
+    # Update sellerExpertise in DB
     db.session.commit()
 
-    # Return household as json
+    # Return sellerExpertise as json
     return sellerExpertise.as_dict()
 
-# Create
 @app.route("/api/sellerExpertise", methods=["POST", "OPTIONS"])
 def createSellerExpertise():
     print(request.json)
@@ -340,5 +337,82 @@ def createSellerExpertise():
     db.session.add(newSellerExpertise)
     db.session.commit()
 
-    # Return household as json
+    # Return sellerExpertise as json
     return newSellerExpertise.as_dict()
+
+############################## OWNERSHIP / OCCUPANCY ROUTES ##############################
+
+# Get
+@app.route("/api/ownershipOccupancy", methods=["GET", "OPTIONS"])
+def getOwnershipOccupancy():
+    print(request.args)
+
+    householdId = request.args.get("householdId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get ownershipOccupancy by id
+    # query by house id, if result set has a row, return row. else, return empty {}
+
+    ownershipRowCount = OwnershipOccupancy.query.filter(OwnershipOccupancy.id == householdId).count()
+
+    if ownershipRowCount > 0:
+        ownershipOccupancy = OwnershipOccupancy.query.filter(OwnershipOccupancy.id == householdId).one()
+        return ownershipOccupancy.as_dict()
+
+    # Return household as json
+    return ""
+
+# Update
+@app.route("/api/ownershipOccupancy", methods=["PATCH", "OPTIONS"])
+def updateOwnershipOccupancy():
+    print(request.json)
+    householdId = request.json.get("id")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get household by id
+    ownershipOccupancy = OwnershipOccupancy.query.filter(OwnershipOccupancy.id == householdId).one()
+    
+    # Update household class
+    ownershipOccupancy.mostRecentOccupation = request.json.get("mostRecentOccupation")
+    ownershipOccupancy.isOccupiedBySeller = request.json.get("isOccupiedBySeller")
+    ownershipOccupancy.sellerOccupancyHistory = request.json.get("sellerOccupancyHistory")
+    ownershipOccupancy.hasHadPets = request.json.get("hasHadPets")
+    ownershipOccupancy.purchaseDate = request.json.get("PurchaseDate")
+    ownershipOccupancy.notes = request.json.get("notes")  
+
+    # Update household in DB
+    db.session.commit()
+
+    # Return household as json
+    return ownershipOccupancy.as_dict()
+
+# Create
+@app.route("/api/ownershipOccupancy", methods=["POST", "OPTIONS"])
+def createOwnershipOccupancy():
+    print(request.json)
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Create new seller expertise class
+    newOwnershipOccupancy = OwnershipOccupancy()
+    newOwnershipOccupancy.mostRecentOccupation = request.json.get("mostRecentOccupation")
+    newOwnershipOccupancy.isOccupiedBySeller = request.json.get("isOccupiedBySeller")
+    newOwnershipOccupancy.sellerOccupancyHistory = request.json.get("sellerOccupancyHistory")
+    newOwnershipOccupancy.hasHadPets = request.json.get("hasHadPets")
+    newOwnershipOccupancy.purchaseDate = request.json.get("PurchaseDate")
+    newOwnershipOccupancy.notes = request.json.get("notes")
+
+    # Add seller expertise to DB
+    db.session.add(newOwnershipOccupancy)
+    db.session.commit()
+
+    # Return household as json
+    return newOwnershipOccupancy.as_dict()

@@ -19,7 +19,7 @@ export default function SellerExpertiseForm(props) {
         <Form.Label className="col">
           Does Seller possess expertise in contracting, engineering,
           architechture, environtmental assessment or other areas related to the
-          construction and conditions of the property and it's improvements?
+          construction and conditions of the property and its improvements?
         </Form.Label>
       </Form.Group>
 
@@ -53,7 +53,7 @@ export default function SellerExpertiseForm(props) {
 
       <Form.Group>
         <Form.Label>
-          Explain and "yes" answers in Seller's Expertise section:
+          Explain any "yes" answers in Seller's Expertise section:
         </Form.Label>
         <Form.Control
           onChange={changeHandler}

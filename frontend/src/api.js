@@ -133,4 +133,26 @@ export default class CapstoneApi {
     let res = await this.request("sellerExpertise/delete", data, "post");
     return res;
   }
+
+  // OWNERSHIP / OCCUPANCY ROUTES
+
+  static async getOwnershipOccupancy(householdId) {
+    let res = await this.request("ownershipOccupancy", { householdId });
+    return res;
+  }
+
+  static async createOwnershipOccupancy(data) {
+    let res = await this.request("ownershipOccupancy", data, "post");
+    return res;
+  }
+
+  static async updateOwnershipOccupancy(data) {
+    let res = await this.request("ownershipOccupancy", data, "patch");
+    return res;
+  }
+
+  static async deleteOwnershipOccupancy(data) {
+    let res = await this.request("ownershipOccupancy/delete", data, "post");
+    return res;
+  }
 }

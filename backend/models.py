@@ -109,7 +109,7 @@ class OwnershipOccupancy(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     mostRecentOccupation = db.Column(db.DateTime)
     isOccupiedBySeller = db.Column(db.Boolean)
-    sellerOccupancyHistory = db.Column(db.Text, nullable=True)
+    sellerOccupancyHistory = db.Column(db.Integer)
     hasHadPets = db.Column(db.Boolean)
     purchaseDate = db.Column(db.DateTime)
     notes = db.Column(db.Text, nullable=True)
