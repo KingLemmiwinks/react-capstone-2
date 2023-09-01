@@ -69,8 +69,8 @@ export default function OwnershipOccupancyForm(props) {
         <Form.Control
           as="select"
           onChange={changeHandler}
-          value={formData?.roleTypeID}
-          name="roleTypeID"
+          value={formData.roleTypeId}
+          name="roleTypeId"
         >
           <option>Select Role</option>
           <option value="1">The Owner</option>

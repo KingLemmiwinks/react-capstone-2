@@ -2,7 +2,7 @@
 import os
 from flask import Flask, session, flash, g, request, json
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy
+from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy, Associations, Roof
 from sqlalchemy.exc import IntegrityError
 
 # API_BASE_URL = "URL"
@@ -22,8 +22,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
-db.drop_all()
-db.create_all()
+# db.drop_all()
+# db.create_all()
 
 # Remove SECRET_KEY for Production
 app.config['SECRET_KEY'] = "SuperSecret"
@@ -342,7 +342,6 @@ def createSellerExpertise():
 
 ############################## OWNERSHIP / OCCUPANCY ROUTES ##############################
 
-# Get
 @app.route("/api/ownershipOccupancy", methods=["GET", "OPTIONS"])
 def getOwnershipOccupancy():
     print(request.args)
@@ -362,10 +361,9 @@ def getOwnershipOccupancy():
         ownershipOccupancy = OwnershipOccupancy.query.filter(OwnershipOccupancy.id == householdId).one()
         return ownershipOccupancy.as_dict()
 
-    # Return household as json
+    # Return ownershipOccupancy as json
     return ""
 
-# Update
 @app.route("/api/ownershipOccupancy", methods=["PATCH", "OPTIONS"])
 def updateOwnershipOccupancy():
     print(request.json)
@@ -375,10 +373,12 @@ def updateOwnershipOccupancy():
         flash("Access unauthorized.", "danger")
         return None
     
-    # Get household by id
+    # Get ownershipOccupancy by id
     ownershipOccupancy = OwnershipOccupancy.query.filter(OwnershipOccupancy.id == householdId).one()
     
-    # Update household class
+    # Update ownershipOccupancy class
+    ownershipOccupancy.householdID = request.json.get("householdId")
+    ownershipOccupancy.roleTypeID = request.json.get("roleTypeId")
     ownershipOccupancy.mostRecentOccupation = request.json.get("mostRecentOccupation")
     ownershipOccupancy.isOccupiedBySeller = request.json.get("isOccupiedBySeller")
     ownershipOccupancy.sellerOccupancyHistory = request.json.get("sellerOccupancyHistory")
@@ -386,13 +386,12 @@ def updateOwnershipOccupancy():
     ownershipOccupancy.purchaseDate = request.json.get("PurchaseDate")
     ownershipOccupancy.notes = request.json.get("notes")  
 
-    # Update household in DB
+    # Update ownershipOccupancy in DB
     db.session.commit()
 
-    # Return household as json
+    # Return ownershipOccupancy as json
     return ownershipOccupancy.as_dict()
 
-# Create
 @app.route("/api/ownershipOccupancy", methods=["POST", "OPTIONS"])
 def createOwnershipOccupancy():
     print(request.json)
@@ -401,8 +400,10 @@ def createOwnershipOccupancy():
         flash("Access unauthorized.", "danger")
         return None
     
-    # Create new seller expertise class
+    # Create new ownershipOccupancy class
     newOwnershipOccupancy = OwnershipOccupancy()
+    newOwnershipOccupancy.householdID = request.json.get("householdId")
+    newOwnershipOccupancy.roleTypeID = request.json.get("roleTypeId")
     newOwnershipOccupancy.mostRecentOccupation = request.json.get("mostRecentOccupation")
     newOwnershipOccupancy.isOccupiedBySeller = request.json.get("isOccupiedBySeller")
     newOwnershipOccupancy.sellerOccupancyHistory = request.json.get("sellerOccupancyHistory")
@@ -410,9 +411,163 @@ def createOwnershipOccupancy():
     newOwnershipOccupancy.purchaseDate = request.json.get("PurchaseDate")
     newOwnershipOccupancy.notes = request.json.get("notes")
 
-    # Add seller expertise to DB
+    # Add ownershipOccupancy to DB
     db.session.add(newOwnershipOccupancy)
     db.session.commit()
 
-    # Return household as json
+    # Return ownershipOccupancy as json
     return newOwnershipOccupancy.as_dict()
+
+############################## ASSOCIATIONS ROUTES ##############################
+
+@app.route("/api/associations", methods=["GET", "OPTIONS"])
+def getAssociations():
+    print(request.args)
+
+    householdId = request.args.get("householdId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get associations by id
+    # query by house id, if result set has a row, return row. else, return empty {}
+
+    associationsRowCount = Associations.query.filter(Associations.id == householdId).count()
+
+    if associationsRowCount > 0:
+        associations = Associations.query.filter(Associations.id == householdId).one()
+        return associations.as_dict()
+
+    # Return associations as json
+    return ""
+
+@app.route("/api/associations", methods=["PATCH", "OPTIONS"])
+def updateAssociations():
+    print(request.json)
+    householdId = request.json.get("id")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get associations by id
+    associations = Associations.query.filter(Associations.id == householdId).one()
+    
+    # Update associations class
+    associations.householdID = request.json.get("householdId")
+    associations.associationTypeID = request.json.get("associationTypeID")
+    associations.frequencyTypeID = request.json.get("frequencyTypeID")
+    associations.fees = request.json.get("fees")
+    associations.initiationFees = request.json.get("initiationFees")
+    associations.communityMaintenance = request.json.get("communityMaintenance")
+    associations.notes = request.json.get("notes")
+
+    # Update associations in DB
+    db.session.commit()
+
+    # Return associations as json
+    return associations.as_dict()
+
+@app.route("/api/associations", methods=["POST", "OPTIONS"])
+def createAssociations():
+    print(request.json)
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Create new associations class
+    newAssociations = Associations()
+    newAssociations.householdID = request.jason.get("householdId")
+    newAssociations.associationTypeID = request.jason.get("associationTypeID")
+    newAssociations.frequencyTypeID = request.jason.get("frequencyTypeID")
+    newAssociations.fees = request.json.get("fees")
+    newAssociations.initiationFees = request.json.get("initiationFees")
+    newAssociations.communityMaintenance = request.json.get("communityMaintenance")
+    newAssociations.notes = request.json.get("notes")
+
+    # Add associations to DB
+    db.session.add(newAssociations)
+    db.session.commit()
+
+    # Return associations as json
+    return newAssociations.as_dict()
+
+############################## ROOF ROUTES ##############################
+
+@app.route("/api/roof", methods=["GET", "OPTIONS"])
+def getroof():
+    print(request.args)
+
+    householdId = request.args.get("householdId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get roof by id
+    # query by house id, if result set has a row, return row. else, return empty {}
+
+    roofRowCount = Roof.query.filter(Roof.id == householdId).count()
+
+    if roofRowCount > 0:
+        roof = Roof.query.filter(Roof.id == householdId).one()
+        return roof.as_dict()
+
+    # Return roof as json
+    return ""
+
+@app.route("/api/roof", methods=["PATCH", "OPTIONS"])
+def updateRoof():
+    print(request.json)
+    householdId = request.json.get("id")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get roof by id
+    roof = Roof.query.filter(Roof.id == householdId).one()
+    
+    # Update roof class
+    roof.householdID = request.json.get("householdId")
+    roof.installationDate = request.json.get("installationDate")
+    roof.invoicePhoto = request.json.get("invoicePhoto")
+    roof.hasBeenReplaced = request.json.get("hasBeenReplaced")
+    roof.hadExistingMaterialRemoved = request.json.get("hadExistingMaterialRemoved")
+    roof.hasPreexistingLeaks = request.json.get("hasPreexistingLeaks")
+    roof.hasRainwaterProblems = request.json.get("hasRainwaterProblems")
+    roof.notes = request.json.get("notes")
+
+    # Update roof in DB
+    db.session.commit()
+
+    # Return roof as json
+    return roof.as_dict()
+
+@app.route("/api/roof", methods=["POST", "OPTIONS"])
+def createRoof():
+    print(request.json)
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Create new roof class
+    newRoof = Roof()
+    newRoof.householdID = request.jason.get("householdId")
+    newRoof.installationDate = request.jason.get("installationDate")
+    newRoof.invoicePhoto = request.jason.get("invoicePhoto")
+    newRoof.hasBeenReplaced = request.json.get("hasBeenReplaced")
+    newRoof.hadExistingMaterialRemoved = request.json.get("hadExistingMaterialRemoved")
+    newRoof.hasPreexistingLeaks = request.json.get("hasPreexistingLeaks")
+    newRoof.hasRainwaterProblems = request.json.get("hasRainwaterProblems")
+    newRoof.notes = request.json.get("notes")
+
+    # Add roof to DB
+    db.session.add(newRoof)
+    db.session.commit()
+
+    # Return roof as json
+    return newRoof.as_dict()

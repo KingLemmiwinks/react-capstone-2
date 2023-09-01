@@ -56,6 +56,7 @@ export default function OwnershipOccupancy(props) {
     let data = {
       id: isNew ? null : formData.id,
       householdId: householdId,
+      roleTypeId: formData.roleTypeId,
       mostRecentOccupation: formData.mostRecentOccupation,
       isOccupiedBySeller: formData.isOccupiedBySeller,
       sellerOccupancyHistory: formData.sellerOccupancyHistory,
@@ -80,6 +81,7 @@ export default function OwnershipOccupancy(props) {
     setFormData({
       id: ownership.id,
       householdId: householdId ?? null,
+      roleTypeId: ownership.roleTypeId ?? null,
       mostRecentOccupation: ownership.mostRecentOccupation ?? "",
       isOccupiedBySeller: ownership.isOccupiedBySeller ?? false,
       sellerOccupancyHistory: ownership.sellerOccupancyHistory ?? 0,

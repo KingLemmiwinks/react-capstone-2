@@ -155,4 +155,26 @@ export default class CapstoneApi {
     let res = await this.request("ownershipOccupancy/delete", data, "post");
     return res;
   }
+
+  // ASSOCIATIONS ROUTES
+
+  static async getAssociations(householdId) {
+    let res = await this.request("associations", { householdId });
+    return res;
+  }
+
+  static async createAssociations(data) {
+    let res = await this.request("associations", data, "post");
+    return res;
+  }
+
+  static async updateAssociations(data) {
+    let res = await this.request("associations", data, "patch");
+    return res;
+  }
+
+  static async deleteAssociations(data) {
+    let res = await this.request("associations/delete", data, "post");
+    return res;
+  }
 }
