@@ -2,7 +2,7 @@
 import os
 from flask import Flask, session, flash, g, request, json
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy, Associations, Roof
+from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy, Associations, Roof, Basement
 from sqlalchemy.exc import IntegrityError
 
 # API_BASE_URL = "URL"
@@ -479,9 +479,9 @@ def createAssociations():
     
     # Create new associations class
     newAssociations = Associations()
-    newAssociations.householdID = request.jason.get("householdId")
-    newAssociations.associationTypeID = request.jason.get("associationTypeID")
-    newAssociations.frequencyTypeID = request.jason.get("frequencyTypeID")
+    newAssociations.householdID = request.json.get("householdId")
+    newAssociations.associationTypeID = request.json.get("associationTypeID")
+    newAssociations.frequencyTypeID = request.json.get("frequencyTypeID")
     newAssociations.fees = request.json.get("fees")
     newAssociations.initiationFees = request.json.get("initiationFees")
     newAssociations.communityMaintenance = request.json.get("communityMaintenance")
@@ -556,9 +556,9 @@ def createRoof():
     
     # Create new roof class
     newRoof = Roof()
-    newRoof.householdID = request.jason.get("householdId")
-    newRoof.installationDate = request.jason.get("installationDate")
-    newRoof.invoicePhoto = request.jason.get("invoicePhoto")
+    newRoof.householdID = request.json.get("householdId")
+    newRoof.installationDate = request.json.get("installationDate")
+    newRoof.invoicePhoto = request.json.get("invoicePhoto")
     newRoof.hasBeenReplaced = request.json.get("hasBeenReplaced")
     newRoof.hadExistingMaterialRemoved = request.json.get("hadExistingMaterialRemoved")
     newRoof.hasPreexistingLeaks = request.json.get("hasPreexistingLeaks")
@@ -571,3 +571,81 @@ def createRoof():
 
     # Return roof as json
     return newRoof.as_dict()
+
+############################## BASEMENT ROUTES ##############################
+
+@app.route("/api/basement", methods=["GET", "OPTIONS"])
+def getBasement():
+    print(request.args)
+
+    householdId = request.args.get("householdId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get basement by id
+    # query by house id, if result set has a row, return row. else, return empty {}
+
+    basementRowCount = Roof.query.filter(Basement.id == householdId).count()
+
+    if basementRowCount > 0:
+        basement = Basement.query.filter(Basement.id == householdId).one()
+        return basement.as_dict()
+
+    # Return basement as json
+    return ""
+
+@app.route("/api/basement", methods=["PATCH", "OPTIONS"])
+def updateBasement():
+    print(request.json)
+    householdId = request.json.get("id")
+     
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get basement by id
+    basement = Basement.query.filter(Basement.id == householdId).one()
+    
+    # Update roof class
+    basement.householdID = request.json.get("householdId")
+    basement.hasSumpPump = request.json.get("hasSumpPump")
+    basement.pumpCount = request.json.get("pumpCount")
+    basement.hasBeenUsed = request.json.get("hasBeenUsed")
+    basement.hasWaterDamage = request.json.get("hasWaterDamage")
+    basement.hasRepairs = request.json.get("hasRepairs")
+    basement.hasDownspoutConnection = request.json.get("hasDownspoutConnection")
+    basement.notes = request.json.get("notes")
+
+    # Update basement in DB
+    db.session.commit()
+
+    # Return basement as json
+    return basement.as_dict()
+
+@app.route("/api/basement", methods=["POST", "OPTIONS"])
+def createBsement():
+    print(request.json)
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Create new basement class
+    newBasement = Basement()
+    newBasement.householdID = request.json.get("householdId")
+    newBasement.hasSumpPump = request.json.get("hasSumpPump")
+    newBasement.pumpCount = request.json.get("pumpCount")
+    newBasement.hasBeenUsed = request.json.get("hasBeenUsed")
+    newBasement.hasWaterDamage = request.json.get("hasWaterDamage")
+    newBasement.hasRepairs = request.json.get("hasRepairs")
+    newBasement.hasDownspoutConnection = request.json.get("hasDownspoutConnection")
+    newBasement.notes = request.json.get("notes")
+
+    # Add bsement to DB
+    db.session.add(newBasement)
+    db.session.commit()
+
+    # Return basement as json
+    return newBasement.as_dict()

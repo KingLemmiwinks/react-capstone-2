@@ -21,14 +21,14 @@ export default function Basement(props) {
 
   async function updateBasement(data) {
     let basement = await CapstoneApi.updateBasement(data);
-    setRoof(basement);
+    setBasement(basement);
     setIsLoading(false);
     console.log("Basement Updated: " + basement.id);
   }
 
   async function createBasement(data) {
     let basement = await CapstoneApi.createBasement(data);
-    setRoof(basement);
+    setBasement(basement);
     setIsLoading(false);
     setIsNew(false);
     console.log("Basement Created: " + basement.id);
@@ -56,20 +56,20 @@ export default function Basement(props) {
     let data = {
       id: isNew ? null : formData.id,
       householdId: householdId,
-      installationDate: formData.installationDate,
-      invoicePhoto: formData.invoicePhoto,
-      hasBeenReplaced: formData.hasBeenReplaced,
-      hadExistingMaterialRemoved: formData.hadExistingMaterialRemoved,
-      hasPreexistingLeaks: formData.hasPreexistingLeaks,
-      hasRainwaterProblems: formData.hasRainwaterProblems,
+      hasSumpPump: formData.hasSumpPump,
+      pumpCount: formData.pumpCount,
+      hasBeenUsed: formData.hasBeenUsed,
+      hasWaterDamage: formData.hasWaterDamage,
+      hasRepairs: formData.hasRepairs,
+      hasDownspoutConnection: formData.hasDownspoutConnection,
       notes: formData.notes,
     };
 
     try {
       if (isNew) {
-        createRoof(data);
+        createBasement(data);
       } else {
-        updateRoof(data);
+        updateBasement(data);
       }
     } catch (errors) {
       setIsLoading(false);
@@ -79,21 +79,21 @@ export default function Basement(props) {
 
   useEffect(() => {
     setFormData({
-      id: roof.id,
+      id: basement.id,
       householdId: householdId ?? null,
-      installationDate: roof.installationDate ?? "",
-      invoicePhoto: roof.invoicePhoto ?? null,
-      hasBeenReplaced: roof.hasBeenReplaced ?? false,
-      hadExistingMaterialRemoved: roof.hadExistingMaterialRemoved ?? false,
-      hasPreexistingLeaks: roof.hasPreexistingLeaks ?? false,
-      hasRainwaterProblems: roof.hasRainwaterProblems ?? false,
-      notes: roof.notes ?? "",
+      hasSumpPump: basement.hasSumpPump ?? false,
+      pumpCount: basement.pumpCount ?? 1,
+      hasBeenUsed: basement.hasBeenUsed ?? false,
+      hasWaterDamage: basement.hasWaterDamage ?? false,
+      hasRepairs: basement.hasRepairs ?? false,
+      hasDownspoutConnection: basement.hasDownspoutConnection ?? false,
+      notes: basement.notes ?? "",
       errors: [],
     });
-  }, [roof]);
+  }, [basement]);
 
   useEffect(() => {
-    getRoof();
+    getBasement();
   }, []);
 
   if (isLoading) {
@@ -102,7 +102,7 @@ export default function Basement(props) {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <RoofForm
+        <BasementForm
           submitHandler={submitHandler}
           changeHandler={changeHandler}
           checkboxChangeHandler={checkboxChangeHandler}

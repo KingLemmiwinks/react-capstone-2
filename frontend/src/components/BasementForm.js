@@ -2,7 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export default function AssociationsForm(props) {
+export default function BasementForm(props) {
   const {
     submitHandler,
     changeHandler,
@@ -13,26 +13,37 @@ export default function AssociationsForm(props) {
 
   return (
     <Form onSubmit={submitHandler}>
-      <Form.Group>
-        <Form.Label>When was the roof installed?</Form.Label>
-        <Form.Control
-          onChange={changeHandler}
-          value={formData.installationDate}
-          name="installationDate"
-          type="text"
-          placeholder="MM/DD/YYYY"
+      <Form.Group className="row">
+        <Form.Check
+          type={"checkbox"}
+          className="col-1"
+          onChange={checkboxChangeHandler}
+          value={formData.hasSumpPump}
+          checked={formData.hasSumpPump}
+          name="hasSumpPump"
         />
+        <Form.Label className="col">
+          Does the property have a sump pump?
+        </Form.Label>
       </Form.Group>
 
       <Form.Group>
-        <Form.Label>Do you have documentation?</Form.Label>
+        <Form.Label>
+          If "Yes", how many?
+        </Form.Label>
         <Form.Control
+          as="select"
           onChange={changeHandler}
-          value={formData.invoicePhoto}
-          name="invoicePhoto"
-          type="text"
-          placeholder="Invoice Photo"
-        />
+          value={formData.sellerOccupancyHistory}
+          name="sellerOccupancyHistory"
+        >
+          <option>Number of Sump Pumps</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </Form.Control>
       </Form.Group>
 
       <Form.Group className="row">
@@ -40,13 +51,12 @@ export default function AssociationsForm(props) {
           type={"checkbox"}
           className="col-1"
           onChange={checkboxChangeHandler}
-          value={formData.hasBeenReplaced}
-          checked={formData.hasBeenReplaced}
-          name="hasBeenReplaced"
+          value={formData.hasBeenUsed}
+          checked={formData.hasBeenUsed}
+          name="hasBeenUsed"
         />
         <Form.Label className="col">
-          Has the roof or any portion of it been replaced or repaired during
-          your ownership?
+          If it has a sump pump, has it ever run?
         </Form.Label>
       </Form.Group>
 
@@ -55,12 +65,13 @@ export default function AssociationsForm(props) {
           type={"checkbox"}
           className="col-1"
           onChange={checkboxChangeHandler}
-          value={formData.hasPreexistingLeaks}
-          checked={formData.hasPreexistingLeaks}
-          name="hasPreexistingLeaks"
+          value={formData.hasWaterDamage}
+          checked={formData.hasWaterDamage}
+          name="hasWaterDamage"
         />
         <Form.Label className="col">
-          Has the roof ever leaked during your ownership?
+          Are you aware of any water damage caused by leakage, accumulation, or
+          dampness within the basement?
         </Form.Label>
       </Form.Group>
 
@@ -69,13 +80,27 @@ export default function AssociationsForm(props) {
           type={"checkbox"}
           className="col-1"
           onChange={checkboxChangeHandler}
-          value={formData.hasRainwaterProblems}
-          checked={formData.hasRainwaterProblems}
-          name="hasRainwaterProblems"
+          value={formData.hasDownspoutConnection}
+          checked={formData.hasDownspoutConnection}
+          name="hasDownspoutConnection"
         />
         <Form.Label className="col">
-          Are you aware of any current/past problems with the roof, gutters,
-          flashing, or downspouts?
+          Are the downspout gutters connected to a public system?
+        </Form.Label>
+      </Form.Group>
+
+      <Form.Group className="row">
+        <Form.Check
+          type={"checkbox"}
+          className="col-1"
+          onChange={checkboxChangeHandler}
+          value={formData.hasRepairs}
+          checked={formData.hasRepairs}
+          name="hasRepairs"
+        />
+        <Form.Label className="col">
+          Do you know of any repairs or other attempts to control and water or
+          dampness problem in the basement or crawlspace?
         </Form.Label>
       </Form.Group>
 
