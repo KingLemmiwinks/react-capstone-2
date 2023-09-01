@@ -36,7 +36,7 @@ export default function AppNav({ logout }) {
   return (
     <Navbar bg="dark" expand="md" fixed="top" variant="dark">
       <Navbar.Brand as={Link} to="/">
-        Jobly
+        Seller's Disclosure Portfolio
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav" className="ml-auto">
