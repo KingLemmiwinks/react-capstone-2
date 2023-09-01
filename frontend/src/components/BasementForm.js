@@ -45,8 +45,8 @@ export default function AssociationsForm(props) {
           name="hasBeenReplaced"
         />
         <Form.Label className="col">
-          Has the roof or any portion of it been replaced or repaired during your
-          ownership?
+          Has the roof or any portion of it been replaced or repaired during
+          your ownership?
         </Form.Label>
       </Form.Group>
 

@@ -3,35 +3,35 @@ import Card from "react-bootstrap/Card";
 import CapstoneApi from "../api";
 import RoofForm from "./RoofForm";
 
-export default function Associations(props) {
+export default function Roof(props) {
   const { householdId } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [roof, setRoof] = useState({});
   const [isNew, setIsNew] = useState(false);
   const [formData, setFormData] = useState();
 
-  async function getAssociations() {
-    let associations = await CapstoneApi.getAssociations(householdId);
-    setAssociations(associations);
-    if (associations === "") {
+  async function getRoof() {
+    let roof = await CapstoneApi.getRoof(householdId);
+    setRoof(roof);
+    if (roof === "") {
       setIsNew(true);
     }
     setIsLoading(false);
   }
 
-  async function updateAssociations(data) {
-    let associations = await CapstoneApi.updateAssociations(data);
-    setAssociations(associations);
+  async function updateRoof(data) {
+    let roof = await CapstoneApi.updateRoof(data);
+    setRoof(roof);
     setIsLoading(false);
-    console.log("Associations Updated: " + associations.id);
+    console.log("Roof Updated: " + roof.id);
   }
 
-  async function createAssociations(data) {
-    let associations = await CapstoneApi.createAssociations(data);
-    setAssociations(associations);
+  async function createRoof(data) {
+    let roof = await CapstoneApi.createRoof(data);
+    setRoof(roof);
     setIsLoading(false);
     setIsNew(false);
-    console.log("Associations Created: " + associations.id);
+    console.log("Roof Created: " + roof.id);
   }
 
   const changeHandler = (e) => {
@@ -56,19 +56,20 @@ export default function Associations(props) {
     let data = {
       id: isNew ? null : formData.id,
       householdId: householdId,
-      associationTypeID: formData.associationTypeID,
-      frequencyTypeID: formData.frequencyTypeID,
-      fees: formData.fees,
-      initiationFees: formData.initiationFees,
-      communityMaintenance: formData.communityMaintenance,
+      installationDate: formData.installationDate,
+      invoicePhoto: formData.invoicePhoto,
+      hasBeenReplaced: formData.hasBeenReplaced,
+      hadExistingMaterialRemoved: formData.hadExistingMaterialRemoved,
+      hasPreexistingLeaks: formData.hasPreexistingLeaks,
+      hasRainwaterProblems: formData.hasRainwaterProblems,
       notes: formData.notes,
     };
 
     try {
       if (isNew) {
-        createAssociations(data);
+        createRoof(data);
       } else {
-        updateAssociations(data);
+        updateRoof(data);
       }
     } catch (errors) {
       setIsLoading(false);
@@ -78,20 +79,21 @@ export default function Associations(props) {
 
   useEffect(() => {
     setFormData({
-      id: associations.id,
+      id: roof.id,
       householdId: householdId ?? null,
-      associationTypeID: associations.associationTypeID ?? null,
-      frequencyTypeID: associations.frequencyTypeID ?? null,
-      fees: associations.fees ?? "",
-      initiationFees: associations.initiationFees ?? null,
-      communityMaintenance: associations.communityMaintenance ?? "",
-      notes: associations.notes ?? "",
+      installationDate: roof.installationDate ?? "",
+      invoicePhoto: roof.invoicePhoto ?? null,
+      hasBeenReplaced: roof.hasBeenReplaced ?? false,
+      hadExistingMaterialRemoved: roof.hadExistingMaterialRemoved ?? false,
+      hasPreexistingLeaks: roof.hasPreexistingLeaks ?? false,
+      hasRainwaterProblems: roof.hasRainwaterProblems ?? false,
+      notes: roof.notes ?? "",
       errors: [],
     });
-  }, [associations]);
+  }, [roof]);
 
   useEffect(() => {
-    getAssociations();
+    getRoof();
   }, []);
 
   if (isLoading) {
@@ -100,7 +102,7 @@ export default function Associations(props) {
   return (
     <Card className="mb-3">
       <Card.Body>
-        <AssociationsForm
+        <RoofForm
           submitHandler={submitHandler}
           changeHandler={changeHandler}
           checkboxChangeHandler={checkboxChangeHandler}

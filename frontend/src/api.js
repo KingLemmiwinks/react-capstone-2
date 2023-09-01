@@ -177,4 +177,48 @@ export default class CapstoneApi {
     let res = await this.request("associations/delete", data, "post");
     return res;
   }
+
+  // ROOF ROUTES
+
+  static async getRoof(householdId) {
+    let res = await this.request("roof", { householdId });
+    return res;
+  }
+
+  static async createRoof(data) {
+    let res = await this.request("roof", data, "post");
+    return res;
+  }
+
+  static async updateRoof(data) {
+    let res = await this.request("roof", data, "patch");
+    return res;
+  }
+
+  static async deleteRoof(data) {
+    let res = await this.request("roof/delete", data, "post");
+    return res;
+  }
+
+  // BASEMENT ROUTES
+
+  static async getBasement(householdId) {
+    let res = await this.request("basement", { householdId });
+    return res;
+  }
+
+  static async createBasement(data) {
+    let res = await this.request("basement", data, "post");
+    return res;
+  }
+
+  static async updateBasement(data) {
+    let res = await this.request("basement", data, "patch");
+    return res;
+  }
+
+  static async deleteBasement(data) {
+    let res = await this.request("basement/delete", data, "post");
+    return res;
+  }
 }

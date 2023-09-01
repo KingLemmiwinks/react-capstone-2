@@ -497,7 +497,7 @@ def createAssociations():
 ############################## ROOF ROUTES ##############################
 
 @app.route("/api/roof", methods=["GET", "OPTIONS"])
-def getroof():
+def getRoof():
     print(request.args)
 
     householdId = request.args.get("householdId")
