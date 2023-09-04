@@ -9,8 +9,8 @@ export default class CapstoneApi {
   static async request(
     endpoint,
     params = {},
-    verb = "get",
-    allowAnonymous = true
+    verb = "get"
+    // allowAnonymous = true
   ) {
     // let _token =localStorage.getItem(TOKEN_STORAGE_ID)
 
@@ -41,26 +41,6 @@ export default class CapstoneApi {
     }
   }
 
-  // static async getCompany(handle) {
-  //   let res = await this.request(`companies/${handle}`);
-  //   return res.company;
-  // }
-
-  // static async getCompanies(name) {
-  //   let res = await this.request("companies", { name });
-  //   return res.companies;
-  // }
-
-  // static async getJobs(title) {
-  //   let res = await this.request("jobs", { title });
-  //   return res.jobs;
-  // }
-
-  // static async applyToJob(username, id) {
-  //   let res = await this.request(`users/${username}/jobs/${id}`, {}, "post");
-  //   return res.message;
-  // }
-
   //AUTH ROUTES
 
   static async login(data) {
@@ -80,10 +60,10 @@ export default class CapstoneApi {
     return res;
   }
 
-  // static async saveProfile(username, data) {
-  //   let res = await this.request(`users/${username}`, data, "patch");
-  //   return res.user;
-  // }
+  static async saveProfile(username, data) {
+    let res = await this.request(`user/${username}`, data, "patch");
+    return res.user;
+  }
 
   //HOUSEHOLD ROUTES
 
@@ -221,4 +201,24 @@ export default class CapstoneApi {
     let res = await this.request("basement/delete", data, "post");
     return res;
   }
+
+  // LOOKUP ROUTES
+
+  static async getRoleType(roleTypeId) {
+    let res = await this.request("roleType", { roleTypeId });
+    return res;
+  }
+
+  static async getAssociationType(associationTypeId) {
+    let res = await this.request("associationType", { associationTypeId });
+    return res;
+  }
+
+  static async getFrequencyType(frequencyTypeId) {
+    let res = await this.request("frequencyType", { frequencyTypeId });
+    return res;
+  }
 }
+
+
+  

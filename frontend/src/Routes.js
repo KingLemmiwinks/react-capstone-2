@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import PrivateRoute from "./PrivateRoute";
 import Households from "./components/Households";
 import HouseholdNav from "./components/HouseholdNav";
+import DownloadView from "./components/DownloadView";
 
 export default function Routes({ setToken }) {
   return (
@@ -12,17 +13,18 @@ export default function Routes({ setToken }) {
       <Route exact path="/login">
         <Login setToken={setToken} />
       </Route>
-      <PrivateRoute exact path="/profile">
+      {/* <PrivateRoute exact path="/profile">
         <Profile />
-      </PrivateRoute>
-
-      {/* Make private once login works */}
-      <Route exact path="/households">
+      </PrivateRoute> */}
+      <PrivateRoute exact path="/households">
         <Households />
-      </Route>
-      <Route exact path="/household/:handle/:name">
+      </PrivateRoute>
+      <PrivateRoute exact path="/household/:handle/:name">
         <HouseholdNav />
-      </Route>
+      </PrivateRoute>
+      <PrivateRoute exact path="/downloadView/:householdId">
+        <DownloadView />
+      </PrivateRoute>
     </Switch>
   );
 }

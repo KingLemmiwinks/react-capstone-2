@@ -15,6 +15,7 @@ export default function HouseholdForm(props) {
           name="name"
           type="text"
           placeholder="Household Name"
+          required
         />
       </Form.Group>
 
@@ -26,6 +27,7 @@ export default function HouseholdForm(props) {
           name="address"
           type="text"
           placeholder="Street Address"
+          required
         />
       </Form.Group>
 
@@ -37,6 +39,7 @@ export default function HouseholdForm(props) {
           name="city"
           type="text"
           placeholder="City"
+          required
         />
       </Form.Group>
 
@@ -48,6 +51,7 @@ export default function HouseholdForm(props) {
           name="state"
           type="text"
           placeholder="State"
+          required
         />
       </Form.Group>
 
@@ -59,6 +63,7 @@ export default function HouseholdForm(props) {
           name="zip"
           type="number"
           placeholder="Zip"
+          required
         />
       </Form.Group>
 

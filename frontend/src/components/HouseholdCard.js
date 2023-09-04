@@ -8,8 +8,12 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import ConfirmModal from "./ConfirmModal";
+import { useHistory } from "react-router-dom";
+
+
 
 export default function HouseholdCard(props) {
+    const history = useHistory();
   const { householdId, name, address, notes, getUserHouseholds } = props;
   const [show, setShow] = useState(false);
 
@@ -18,6 +22,11 @@ export default function HouseholdCard(props) {
     getUserHouseholds();
   };
   const handleShow = () => setShow(true);
+
+  function handleDownload() {
+    history.push(`/downloadView/${householdId}`);
+  }
+
 
   async function deleteHousehold() {
     let data = {
@@ -35,6 +44,16 @@ export default function HouseholdCard(props) {
           <Card.Title>
             <Row className="justify-content-between">
               <Col>{name}</Col>
+              <Col>
+                <Button
+                  className="d-block ml-auto"
+                  onClick={handleDownload}
+                  variant="info"
+                  type="button"
+                >
+                  Download
+                </Button>
+              </Col>
               <Col>
                 <Button
                   style={{ float: "right" }}

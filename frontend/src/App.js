@@ -14,26 +14,34 @@ export default function App() {
 
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
 
-  useEffect(() => {
-    async function getCurrentUser() {
-      try {
-        let userId = token;
-        let currentUser = await CapstoneApi.getCurrentUser(userId);
-        setCurrentUser(currentUser);
-      } catch (err) {
-        setCurrentUser(null);
-      }
-      setInfoLoaded(true);
-    }
-    setInfoLoaded(false);
-    getCurrentUser();
-  }, [token]);
-
   const handleLogOut = () => {
     setCurrentUser(null);
     setToken(null);
   };
 
+  async function getCurrentUser() {
+    try {
+      let userId = token;
+      let currentUser = await CapstoneApi.getCurrentUser(userId);
+      setCurrentUser(currentUser);
+    } catch (err) {
+      setCurrentUser(null);
+    }
+    setInfoLoaded(true);
+  }
+
+  useEffect(() => {    
+    setInfoLoaded(false);
+
+    if(token){
+      getCurrentUser();
+    }
+    else{
+      setInfoLoaded(true);
+    }
+  }, [token]);
+
+  
   if (!infoLoaded) {
     return <ClipLoader size={150} color="#123abc" />;
   }

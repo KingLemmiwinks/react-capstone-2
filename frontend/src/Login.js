@@ -16,6 +16,7 @@ export default function Login({ setToken }) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    password2: "",
     errors: [],
   });
 
@@ -33,6 +34,11 @@ export default function Login({ setToken }) {
     let endpoint;
 
     if (activeView === "register") {
+      if(formData.password != formData.password2){
+        alert("Passwords must match");
+        setFormData({username:formData.username, password:"", password2:"", errors: []});
+        return
+      }
       data = {
         username: formData.username,
         password: formData.password
@@ -49,14 +55,29 @@ export default function Login({ setToken }) {
     let token;
 
     try {
-      // RETURN userID
-      token = await CapstoneApi[endpoint](data);
+      const response = await CapstoneApi[endpoint](data);
+
+      if (response?.toString().indexOf("Error") >= 0){
+        alert(response);
+        setFormData({
+          username: "",
+          password: "",
+          password2: "",
+          errors: [],
+        });
+        return
+      }
+    
+      token=response;
+      setToken(token);
+      history.push("/households");
+      
+
     } catch (errors) {
       return setFormData((data) => ({ ...data, errors }));
     }
 
-    setToken(token);
-    history.push("/households");
+    
   };
 
   return (
@@ -90,6 +111,7 @@ export default function Login({ setToken }) {
                     type="text"
                     name="username"
                     value={formData.username}
+                    required
                   />
                   <Form.Label>Password</Form.Label>
                   <Form.Control
@@ -98,7 +120,21 @@ export default function Login({ setToken }) {
                     type="password"
                     name="password"
                     value={formData.password}
-                  />                  
+                    required
+                  />
+                  {activeView === "register" && (
+                    <>
+                      <Form.Label>Retype Password</Form.Label>
+                      <Form.Control
+                        className="mb-2"
+                        onChange={changeHandler}
+                        type="password"
+                        name="password2"
+                        value={formData.password2}
+                        required
+                      />
+                    </>
+                  )}
                 </Form.Group>
                 {formData.errors.length > 0 && (
                   <Alert type="danger" messages={formData.errors} />

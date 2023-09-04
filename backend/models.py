@@ -1,6 +1,3 @@
-# Add 4 metadata columns to ALL EDITABLE MODELS
-# createdBy, createdDate, modifiedBy, modifiedDate
-
 from flask import json
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
@@ -62,10 +59,10 @@ class Household(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
-    street_address = db.Column(db.String)
-    city = db.Column(db.String)
-    state = db.Column(db.String)
-    zip = db.Column(db.Integer)
+    street_address = db.Column(db.String, nullable=False)
+    city = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
+    zip = db.Column(db.Integer, nullable=False)
     photo = db.Column(db.String, nullable=True)
     notes = db.Column(db.Text, nullable=True)
 
@@ -107,11 +104,11 @@ class OwnershipOccupancy(db.Model):
     __tablename__ = 'ownershipOccupancy'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    mostRecentOccupation = db.Column(db.DateTime)
+    mostRecentOccupation = db.Column(db.DateTime, nullable=True)
     isOccupiedBySeller = db.Column(db.Boolean)
-    sellerOccupancyHistory = db.Column(db.Integer)
+    sellerOccupancyHistory = db.Column(db.Integer, nullable=True)
     hasHadPets = db.Column(db.Boolean)
-    purchaseDate = db.Column(db.DateTime)
+    purchaseDate = db.Column(db.DateTime, nullable=True)
     notes = db.Column(db.Text, nullable=True)
     householdID = db.Column(db.Integer, db.ForeignKey('households.id', ondelete='cascade'))
     roleTypeID = db.Column(db.Integer, db.ForeignKey('roleTypes.id', ondelete='cascade'))
@@ -125,7 +122,10 @@ class RoleType(db.Model):
     __tablename__ = 'roleTypes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    roleTypeName = db.Column(db.String)
+    roleTypeName = db.Column(db.String, nullable=True)
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class Associations(db.Model):
     """Associations"""
@@ -150,7 +150,10 @@ class AssociationType(db.Model):
     __tablename__ = 'associationTypes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    associationTypeName = db.Column(db.String)
+    associationTypeName = db.Column(db.String, nullable=True)
+    
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class FrequencyType(db.Model):
     """Frequency Type"""
@@ -158,7 +161,10 @@ class FrequencyType(db.Model):
     __tablename__ = 'frequencyTypes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    frequencyTypeName = db.Column(db.String)
+    frequencyTypeName = db.Column(db.String, nullable=True)
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class Roof(db.Model):
     """Roof"""

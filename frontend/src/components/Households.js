@@ -10,6 +10,7 @@ import HouseholdCard from "./HouseholdCard";
 import HouseholdModal from "./HouseholdModal";
 
 export default function Households() {
+
   const { currentUser } = useContext(UserContext);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -64,8 +65,11 @@ export default function Households() {
   }
 
   
-  useEffect(() => {    
-    getUserHouseholds();
+  
+  useEffect(() => {   
+    if(currentUser){
+      getUserHouseholds();
+    } 
     
   }, []);
 

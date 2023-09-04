@@ -2,7 +2,7 @@
 import os
 from flask import Flask, session, flash, g, request, json
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy, Associations, Roof, Basement
+from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy, Associations, Roof, Basement, RoleType, FrequencyType, AssociationType
 from sqlalchemy.exc import IntegrityError
 
 # API_BASE_URL = "URL"
@@ -72,6 +72,10 @@ def register():
         del session[CURR_USER_KEY]
 
     try:
+        existingUser = User.query.filter(username == User.username).all()
+        if existingUser:
+            return ("Error: Username Already Taken")
+
         user = User.register(username, password)
         db.session.add(user)
         db.session.commit()
@@ -104,9 +108,8 @@ def login():
 
         return str(user.id)
 
-    else:
-        flash("Username already taken", 'danger')
-        return None # need to figure out how to return errors to the user
+    else:        
+        return ("Error: Login not found")
 
 
 @app.route('/api/logout')
@@ -649,3 +652,53 @@ def createBsement():
 
     # Return basement as json
     return newBasement.as_dict()
+
+############################## LOOKUP ROUTES ##############################
+
+@app.route("/api/roleType", methods=["GET", "OPTIONS"])
+def getRoleType():
+    print(request.args)
+
+    roleTypeID = request.args.get("roleTypeId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get roleType by id
+
+    roleType = RoleType.query.filter(RoleType.id == roleTypeID).one()
+
+    return roleType.as_dict()
+
+@app.route("/api/frequencyType", methods=["GET", "OPTIONS"])
+def getFrequencyType():
+    print(request.args)
+
+    frequencyTypeID = request.args.get("frequencyTypeId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get frequencyType by id
+
+    frequencyType = FrequencyType.query.filter(FrequencyType.id == frequencyTypeID).one()
+
+    return frequencyType.as_dict()
+
+@app.route("/api/associationType", methods=["GET", "OPTIONS"])
+def getAssociationType():
+    print(request.args)
+
+    associationTypeID = request.args.get("associationTypeId")
+    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return None
+    
+    # Get associationType by id
+
+    associationType = AssociationType.query.filter(AssociationType.id == associationTypeID).one()
+
+    return associationType.as_dict()

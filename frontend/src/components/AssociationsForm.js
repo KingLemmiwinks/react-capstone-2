@@ -8,7 +8,6 @@ export default function AssociationsForm(props) {
     changeHandler,
     formData,
     buttonText,
-    checkboxChangeHandler,
   } = props;
 
   return (

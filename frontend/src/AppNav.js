@@ -13,10 +13,10 @@ export default function AppNav({ logout }) {
         <Nav.Link as={Link} to="/households">
           Households
         </Nav.Link>        
-        <Nav.Link as={Link} to="/profile">
+        {/* <Nav.Link as={Link} to="/profile">
           Profile
-        </Nav.Link>
-        <Nav.Link as={Link} to="/" onClick={logout}>
+        </Nav.Link> */}
+        <Nav.Link as={Link} to="/login" onClick={logout}>
           Log Out
         </Nav.Link>
       </Nav>
@@ -27,7 +27,7 @@ export default function AppNav({ logout }) {
     return (
       <Nav className="ml-auto">
         <Nav.Link as={Link} to="/login">
-          Login
+          Login/Register
         </Nav.Link>        
       </Nav>
     );
@@ -35,7 +35,7 @@ export default function AppNav({ logout }) {
 
   return (
     <Navbar bg="dark" expand="md" fixed="top" variant="dark">
-      <Navbar.Brand as={Link} to="/">
+      <Navbar.Brand as={Link} to="/login">
         Seller's Disclosure Portfolio
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbar-nav" />
