@@ -81,7 +81,7 @@ export default function OwnershipOccupancy(props) {
     setFormData({
       id: ownership.id,
       householdId: householdId ?? null,
-      roleTypeId: ownership.roleTypeId ?? null,
+      roleTypeId: ownership.roleTypeId ?? "1",
       mostRecentOccupation: ownership.mostRecentOccupation ?? "",
       isOccupiedBySeller: ownership.isOccupiedBySeller ?? false,
       sellerOccupancyHistory: ownership.sellerOccupancyHistory ?? 0,

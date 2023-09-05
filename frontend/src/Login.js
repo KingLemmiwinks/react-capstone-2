@@ -34,7 +34,7 @@ export default function Login({ setToken }) {
     let endpoint;
 
     if (activeView === "register") {
-      if(formData.password != formData.password2){
+      if(formData.password !== formData.password2){
         alert("Passwords must match");
         setFormData({username:formData.username, password:"", password2:"", errors: []});
         return

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import moment from "moment";
 
 export default function AssociationsForm(props) {
   const {
@@ -17,10 +18,11 @@ export default function AssociationsForm(props) {
         <Form.Label>When was the roof installed?</Form.Label>
         <Form.Control
           onChange={changeHandler}
-          value={formData.installationDate}
+          value={moment
+            .utc(formData.installationDate.toLocaleString())
+            .format("yyyy-MM-DD")}
           name="installationDate"
-          type="text"
-          placeholder="MM/DD/YYYY"
+          type="date"
         />
       </Form.Group>
 
@@ -43,10 +45,26 @@ export default function AssociationsForm(props) {
           value={formData.hasBeenReplaced}
           checked={formData.hasBeenReplaced}
           name="hasBeenReplaced"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
-          Has the roof or any portion of it been replaced or repaired during your
-          ownership?
+          Has the roof or any portion of it been replaced or repaired during
+          your ownership?
+        </Form.Label>
+      </Form.Group>
+
+      <Form.Group className="row">
+        <Form.Check
+          type={"checkbox"}
+          className="col-1"
+          onChange={checkboxChangeHandler}
+          value={formData.hadExistingMaterialRemoved}
+          checked={formData.hadExistingMaterialRemoved}
+          name="hadExistingMaterialRemoved"
+          style={{ textAlign: "center" }}
+        />
+        <Form.Label className="col">
+          Has existing material been removed during your ownership?
         </Form.Label>
       </Form.Group>
 
@@ -58,6 +76,7 @@ export default function AssociationsForm(props) {
           value={formData.hasPreexistingLeaks}
           checked={formData.hasPreexistingLeaks}
           name="hasPreexistingLeaks"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Has the roof ever leaked during your ownership?
@@ -72,6 +91,7 @@ export default function AssociationsForm(props) {
           value={formData.hasRainwaterProblems}
           checked={formData.hasRainwaterProblems}
           name="hasRainwaterProblems"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Are you aware of any current/past problems with the roof, gutters,

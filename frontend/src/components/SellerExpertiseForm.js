@@ -15,6 +15,7 @@ export default function SellerExpertiseForm(props) {
           value={formData.hasExpertise}
           checked={formData.hasExpertise}
           name="hasExpertise"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Does Seller possess expertise in contracting, engineering,
@@ -31,6 +32,7 @@ export default function SellerExpertiseForm(props) {
           value={formData.isLandlord}
           checked={formData.isLandlord}
           name="isLandlord"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Is Seller the landlord for the property?
@@ -45,6 +47,7 @@ export default function SellerExpertiseForm(props) {
           value={formData.isRealEstateLicensee}
           checked={formData.isRealEstateLicensee}
           name="isRealEstateLicensee"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Is Seller a real estate licensee?

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import moment from "moment";
 
 export default function OwnershipOccupancyForm(props) {
   const {
@@ -17,10 +18,11 @@ export default function OwnershipOccupancyForm(props) {
         <Form.Label>When was the property most recently occupied?</Form.Label>
         <Form.Control
           onChange={changeHandler}
-          value={formData.mostRecentOccupation}
+          value={moment
+            .utc(formData.mostRecentOccupation.toLocaleString())
+            .format("yyyy-MM-DD")}
           name="mostRecentOccupation"
-          type="text"
-          placeholder="MM/DD/YYYY"
+          type="date"
         />
       </Form.Group>
 
@@ -32,6 +34,7 @@ export default function OwnershipOccupancyForm(props) {
           value={formData.isOccupiedBySeller}
           checked={formData.isOccupiedBySeller}
           name="isOccupiedBySeller"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           The Seller was the most recent occupant.
@@ -61,18 +64,15 @@ export default function OwnershipOccupancyForm(props) {
           <option value="10">10</option>
         </Form.Control>
       </Form.Group>
-      
+
       <Form.Group>
-        <Form.Label>
-          Role of Individual Completing This Disclosure:
-        </Form.Label>
+        <Form.Label>Role of Individual Completing This Disclosure:</Form.Label>
         <Form.Control
           as="select"
           onChange={changeHandler}
           value={formData.roleTypeId}
           name="roleTypeId"
         >
-          <option>Select Role</option>
           <option value="1">The Owner</option>
           <option value="2">The Executor</option>
           <option value="3">The Administrator</option>
@@ -85,10 +85,11 @@ export default function OwnershipOccupancyForm(props) {
         <Form.Label>When was the property purchased?</Form.Label>
         <Form.Control
           onChange={changeHandler}
-          value={formData.purchaseDate}
+          value={moment
+            .utc(formData.purchaseDate.toLocaleString())
+            .format("yyyy-MM-DD")}
           name="purchaseDate"
-          type="text"
-          placeholder="DD/MM/YYYY"
+          type="date"
         />
       </Form.Group>
 
@@ -100,16 +101,16 @@ export default function OwnershipOccupancyForm(props) {
           value={formData.hasHadPets}
           checked={formData.hasHadPets}
           name="hasHadPets"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
-          Are you aware of any pets having lived in the house or other structures during your ownership?
+          Are you aware of any pets having lived in the house or other
+          structures during your ownership?
         </Form.Label>
       </Form.Group>
 
       <Form.Group>
-        <Form.Label>
-            Explain this section if needed:
-        </Form.Label>
+        <Form.Label>Explain this section if needed:</Form.Label>
         <Form.Control
           onChange={changeHandler}
           value={formData.notes}

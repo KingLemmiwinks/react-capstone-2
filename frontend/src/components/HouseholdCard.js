@@ -11,9 +11,8 @@ import ConfirmModal from "./ConfirmModal";
 import { useHistory } from "react-router-dom";
 
 
-
 export default function HouseholdCard(props) {
-    const history = useHistory();
+  const history = useHistory();
   const { householdId, name, address, notes, getUserHouseholds } = props;
   const [show, setShow] = useState(false);
 
@@ -43,7 +42,7 @@ export default function HouseholdCard(props) {
         <Card.Body>
           <Card.Title>
             <Row className="justify-content-between">
-              <Col>{name}</Col>
+              <Col md="8">{name}</Col>
               <Col>
                 <Button
                   className="d-block ml-auto"

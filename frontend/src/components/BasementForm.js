@@ -21,6 +21,7 @@ export default function BasementForm(props) {
           value={formData.hasSumpPump}
           checked={formData.hasSumpPump}
           name="hasSumpPump"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Does the property have a sump pump?
@@ -28,9 +29,7 @@ export default function BasementForm(props) {
       </Form.Group>
 
       <Form.Group>
-        <Form.Label>
-          If "Yes", how many?
-        </Form.Label>
+        <Form.Label>If "Yes", how many?</Form.Label>
         <Form.Control
           as="select"
           onChange={changeHandler}
@@ -54,6 +53,7 @@ export default function BasementForm(props) {
           value={formData.hasBeenUsed}
           checked={formData.hasBeenUsed}
           name="hasBeenUsed"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           If it has a sump pump, has it ever run?
@@ -68,6 +68,7 @@ export default function BasementForm(props) {
           value={formData.hasWaterDamage}
           checked={formData.hasWaterDamage}
           name="hasWaterDamage"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Are you aware of any water damage caused by leakage, accumulation, or
@@ -83,6 +84,7 @@ export default function BasementForm(props) {
           value={formData.hasDownspoutConnection}
           checked={formData.hasDownspoutConnection}
           name="hasDownspoutConnection"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Are the downspout gutters connected to a public system?
@@ -97,6 +99,7 @@ export default function BasementForm(props) {
           value={formData.hasRepairs}
           checked={formData.hasRepairs}
           name="hasRepairs"
+          style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
           Do you know of any repairs or other attempts to control and water or

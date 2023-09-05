@@ -8,6 +8,8 @@ import UserContext from "../UserContext";
 import CapstoneApi from "../api";
 import HouseholdCard from "./HouseholdCard";
 import HouseholdModal from "./HouseholdModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function Households() {
 
@@ -90,7 +92,7 @@ export default function Households() {
               variant="outline-info"
               type="button"
             >
-              New Household
+              <FontAwesomeIcon icon={faPlus} /> New Household
             </Button>
           </Col>
         </Row>

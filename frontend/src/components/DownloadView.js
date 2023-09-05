@@ -3,11 +3,18 @@ import Card from "react-bootstrap/Card";
 import { useParams } from "react-router-dom";
 import CapstoneApi from "../api";
 import Container from "react-bootstrap/Container";
-
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/esm/Button";
+import moment from "moment";
 
 export default function DownloadView() {
-    const params = useParams();
-    const householdId = params.householdId;
+  const params = useParams();
+  const householdId = params.householdId;
+  const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(true);
   const [household, setHousehold] = useState(null);
@@ -21,8 +28,7 @@ export default function DownloadView() {
   const [frequencyType, setFrequencyType] = useState(null);
 
 
-  async function getData(){
-    
+  async function getData(){   
 
     let household = await CapstoneApi.getHousehold(householdId);
     setHousehold(household);
@@ -64,6 +70,17 @@ export default function DownloadView() {
     
   }
 
+  const createPDF = async () => {
+    const pdf = new jsPDF("portrait", "pt", "a4");
+    const data = await html2canvas(document.querySelector("#pdf"));
+    const img = data.toDataURL("image/png");
+    const imgProperties = pdf.getImageProperties(img);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    pdf.addImage(img, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("sellers_disclosure.pdf");
+  }
+
   useEffect(() => {
     setIsLoading(true);
     getData().then(() => {
@@ -76,8 +93,28 @@ export default function DownloadView() {
   }
   return (
     <Container style={{ marginTop: "8%" }}>
+      <div className="row mx-1 mb-3">
+        <Button
+          className="d-block mr-auto"
+          onClick={() => {
+            history.push("/households");
+          }}
+          variant="outline-info"
+          type="button"
+        >
+          <FontAwesomeIcon icon={faChevronLeft} /> Back to Households
+        </Button>
+        <Button
+          className="d-block ml-auto"
+          onClick={createPDF}
+          variant="info"
+          type="button"
+        >
+          Export PDF
+        </Button>
+      </div>
       <Card className="mb-3">
-        <Card.Body>
+        <Card.Body id="pdf">
           <div>
             <h3>Household</h3>
             <br />
@@ -171,7 +208,11 @@ export default function DownloadView() {
                 When was the property most recently occupied?{" "}
               </label>
               <span className="col">
-                {ownershipOccupancy?.mostRecentOccupation}
+                {ownershipOccupancy?.mostRecentOccupation
+                  ? moment(ownershipOccupancy?.mostRecentOccupation).format(
+                      "MM/DD/yyyy"
+                    )
+                  : "N/A"}
               </span>
             </div>
             <div className="row">
@@ -195,13 +236,17 @@ export default function DownloadView() {
               <label className="col-6">
                 Role of Individual Completing This Disclosure:{" "}
               </label>
-              <span className="col">
-                {roleType?.roleTypeName ?? "N/A"}
-              </span>
+              <span className="col">{roleType?.roleTypeName ?? "N/A"}</span>
             </div>
             <div className="row">
               <label className="col-6">When was the property purchased? </label>
-              <span className="col">{ownershipOccupancy?.purchaseDate}</span>
+              <span className="col">
+                {ownershipOccupancy?.purchaseDate
+                  ? moment(ownershipOccupancy?.purchaseDate).format(
+                      "MM/DD/yyyy"
+                    )
+                  : "N/A"}
+              </span>
             </div>
             <div className="row">
               <label className="col-6">
@@ -241,7 +286,7 @@ export default function DownloadView() {
             <div className="row">
               <label className="col-6">How often must the fees be paid? </label>
               <span className="col">
-                {associationType?.frequencyTypeName ?? "N/A"}
+                {frequencyType?.frequencyTypeName ?? "N/A"}
               </span>
             </div>
             <div className="row">
@@ -253,35 +298,30 @@ export default function DownloadView() {
               <span className="col">{associations?.communityMaintenance}</span>
             </div>
             <div className="row">
-              <label className="col-6">When was the property purchased? </label>
-              <span className="col">{ownershipOccupancy?.purchaseDate}</span>
-            </div>
-            <div className="row">
-              <label className="col-6">
-                Are you aware of any pets having lived in the house or other
-                structures during your ownership?{" "}
-              </label>
-              <span className="col">
-                {associations?.hasHadPets ? "Yes" : "No"}
-              </span>
-            </div>
-            <div className="row">
               <label className="col-6">Explain this section if needed: </label>
               <span className="col">{household?.notes}</span>
             </div>
           </div>
           <br />
 
+          {/* Roof Section */}
+
           <div>
             <h3>Roof</h3>
             <br />
             <div className="row">
               <label className="col-6">When was the roof installed? </label>
-              <span className="col">{roof?.installationDate}</span>
+              <span className="col">
+                {roof?.installationDate
+                  ? moment(roof?.installationDate).format("MM/DD/yyyy")
+                  : "N/A"}
+              </span>
             </div>
             <div className="row">
               <label className="col-6">Do you have documentation?</label>
-              <span className="col">{roof?.invoicePhoto}</span>
+              <span className="col">
+                {roof?.invoicePhoto == "" ? "N/A" : roof?.invoicePhoto}
+              </span>
             </div>
             <div className="row">
               <label className="col-6">
@@ -294,9 +334,7 @@ export default function DownloadView() {
             </div>
             <div className="row">
               <label className="col-6">
-                If "Yes", are there any community services or systems that the
-                association or community is responsible for supporting or
-                maintaining?{" "}
+                Has existing material been removed during your ownership?{" "}
               </label>
               <span className="col">
                 {roof?.hadExistingMaterialRemoved ? "Yes" : "No"}
@@ -329,7 +367,6 @@ export default function DownloadView() {
           <div>
             <h3>Basement</h3>
             <br />
-            {/* TODO: Get associationTypeName */}
             <div className="row">
               <label className="col-6">
                 Does the property have a sump pump?
@@ -356,7 +393,7 @@ export default function DownloadView() {
                 accumulation, or dampness within the basement?{" "}
               </label>
               <span className="col">
-                {basement ?.hasWaterDamage ? "Yes" : "No"}
+                {basement?.hasWaterDamage ? "Yes" : "No"}
               </span>
             </div>
             <div className="row">
@@ -372,9 +409,7 @@ export default function DownloadView() {
                 Do you know of any repairs or other attempts to control and
                 water or dampness problem in the basement or crawlspace?{" "}
               </label>
-              <span className="col">
-                {basement?.hasRepairs ? "Yes" : "No"}
-              </span>
+              <span className="col">{basement?.hasRepairs ? "Yes" : "No"}</span>
             </div>
             <div className="row">
               <label className="col-6">Explain this section if needed: </label>
@@ -382,7 +417,6 @@ export default function DownloadView() {
             </div>
           </div>
           <br />
-
         </Card.Body>
       </Card>
     </Container>
