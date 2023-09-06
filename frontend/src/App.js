@@ -6,7 +6,7 @@ import CapstoneApi from "./api";
 import UserContext from "./UserContext";
 import AppNav from "./AppNav";
 
-export const TOKEN_STORAGE_ID = "jobly-token";
+export const TOKEN_STORAGE_ID = "capstone-token";
 
 export default function App() {
   const [infoLoaded, setInfoLoaded] = useState(false);

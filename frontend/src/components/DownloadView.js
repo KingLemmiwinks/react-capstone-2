@@ -217,7 +217,7 @@ export default function DownloadView() {
             </div>
             <div className="row">
               <label className="col-6">
-                The Seller was the most recent occupant.{" "}
+                Was the seller the most recent occupant?{" "}
               </label>
               <span className="col">
                 {ownershipOccupancy?.isOccupiedBySeller ? "Yes" : "No"}
@@ -315,12 +315,6 @@ export default function DownloadView() {
                 {roof?.installationDate
                   ? moment(roof?.installationDate).format("MM/DD/yyyy")
                   : "N/A"}
-              </span>
-            </div>
-            <div className="row">
-              <label className="col-6">Do you have documentation?</label>
-              <span className="col">
-                {roof?.invoicePhoto == "" ? "N/A" : roof?.invoicePhoto}
               </span>
             </div>
             <div className="row">

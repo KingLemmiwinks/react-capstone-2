@@ -26,17 +26,6 @@ export default function AssociationsForm(props) {
         />
       </Form.Group>
 
-      <Form.Group>
-        <Form.Label>Do you have documentation?</Form.Label>
-        <Form.Control
-          onChange={changeHandler}
-          value={formData.invoicePhoto}
-          name="invoicePhoto"
-          type="text"
-          placeholder="Invoice Photo"
-        />
-      </Form.Group>
-
       <Form.Group className="row">
         <Form.Check
           type={"checkbox"}

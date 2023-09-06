@@ -37,7 +37,7 @@ export default function OwnershipOccupancyForm(props) {
           style={{ textAlign: "center" }}
         />
         <Form.Label className="col">
-          The Seller was the most recent occupant.
+          Was the seller the most recent occupant?
         </Form.Label>
       </Form.Group>
 
