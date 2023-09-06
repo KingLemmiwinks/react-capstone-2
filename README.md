@@ -23,7 +23,7 @@ Run the following commands from the Linux terminal:
 3.  **Delete and Create all tables:**
     python seed.py
 
-4.  **Seed the database**
+4.  **Seed the database:**
     psql < capstone-seed.sql
 
 5.  **Start the backend:**
