@@ -13,9 +13,6 @@ export default function AppNav({ logout }) {
         <Nav.Link as={Link} to="/households">
           Households
         </Nav.Link>        
-        {/* <Nav.Link as={Link} to="/profile">
-          Profile
-        </Nav.Link> */}
         <Nav.Link as={Link} to="/login" onClick={logout}>
           Log Out
         </Nav.Link>

@@ -9,7 +9,6 @@ from sqlalchemy.exc import IntegrityError
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
-# CORS(app)
 
 app.app_context().push()
 
@@ -22,8 +21,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
-# db.drop_all()
-# db.create_all()
 
 # Remove SECRET_KEY for Production
 app.config['SECRET_KEY'] = "SuperSecret"

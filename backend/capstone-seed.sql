@@ -12,17 +12,17 @@ VALUES ('testuser',
 
 INSERT INTO households (street_address, city, state, zip, photo, notes)
 VALUES ('123 Test rd', 
-        'Testcity', 
-        'Teststate', 
+        'TestCity', 
+        'TestState', 
         '12345', 
         null, 
-        'Test notes');
+        'Test Notes');
 
 INSERT INTO "sellerExpertise" ("hasExpertise", "isLandlord", "isRealEstateLicensee", notes)
 VALUES (TRUE,
         FALSE,
         FALSE,
-        'Test notes');
+        'Test Notes');
 
 INSERT INTO "ownershipOccupancy" ("mostRecentOccupation", "isOccupiedBySeller", "sellerOccupancyHistory", "hasHadPets", "purchaseDate", notes)
 VALUES (NOW(),
@@ -44,7 +44,7 @@ INSERT INTO associations (fees, "initiationFees", "communityMaintenance", notes)
 VALUES (NULL,
         NULL,
         NULL,
-        'Test notes');
+        'Test Notes');
 
 INSERT INTO "associationTypes"("associationTypeName")
     VALUES  ('Condomunium'),
@@ -63,7 +63,7 @@ VALUES (NOW(),
         FALSE,
         FALSE,
         FALSE,
-        'Test notes');
+        'Test Notes');
 
 INSERT INTO basements ("hasSumpPump", "pumpCount", "hasBeenUsed", "hasWaterDamage", "hasRepairs", "hasDownspoutConnection", notes)
 VALUES (TRUE,
@@ -72,4 +72,4 @@ VALUES (TRUE,
         FALSE,
         FALSE,
         True,
-        'Test notes');
+        'Test Notes');
