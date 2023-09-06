@@ -47,4 +47,4 @@ Click "Download" to view a PDF of your household information
 Click "Export PDF" to view a finalized PDF of your household information before downloading
 
 ## Made With
-[shields.io](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+[https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue]
