@@ -1,6 +1,4 @@
 import axios from "axios";
-// import { TOKEN_STORAGE_ID } from "./App.js";
-
 const BASE_URL = process.env.BASE_URL || "/api";
 
 
@@ -10,17 +8,12 @@ export default class CapstoneApi {
     endpoint,
     params = {},
     verb = "get"
-    // allowAnonymous = true
   ) {
-    // let _token =localStorage.getItem(TOKEN_STORAGE_ID)
+
 
     console.debug("API Call:", endpoint, params, verb);
 
     let q;
-
-    // if (allowAnonymous !== true){
-    //   axios.defaults.headers.common = {'Authorization': `Bearer ${_token}`};
-    // }
 
     axios.defaults.headers.common = { "Content-Type": "application/json" };
 

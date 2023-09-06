@@ -160,8 +160,6 @@ def getUserHouseholds():
     households = UserHousehold.query\
         .filter(UserHousehold.userID == userId)\
         .all()
-        # .join(Household, UserHousehold.householdID == Household.id)\
-        # .add_columns(Household.name, Household.street_address, Household.city, Household.state, Household.zip, Household.photo, Household.notes)\
 
     if not households:
         return []
@@ -249,7 +247,6 @@ def updateHousehold():
 
 @app.route("/api/household/delete", methods=["POST", "OPTIONS"])
 def deleteHousehold():
-    # TODO this isn't really working. The front is throwing a 415 unsupported media type whenever trying to get to this endpoint
 
     print(request.json)
     householdId = request.json.get("householdId")
@@ -261,8 +258,6 @@ def deleteHousehold():
     # Get household by id
     household = Household.query.filter(Household.id == householdId).one()
     
-    # Delete household from userHousehold
-    # db.session.delete(userHousehold)
     db.session.delete(household)
     db.session.commit()
 

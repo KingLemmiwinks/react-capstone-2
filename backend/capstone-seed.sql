@@ -1,4 +1,4 @@
--- test user has the password "password"
+-- testuser has the password "password"
 
 \c capstone_2_db
 
@@ -10,8 +10,9 @@ VALUES ('testuser',
         'testuser@testuser.com',
         1234567890);
 
-INSERT INTO households (street_address, city, state, zip, photo, notes)
-VALUES ('123 Test rd', 
+INSERT INTO households (name, street_address, city, state, zip, photo, notes)
+VALUES ('Test House',
+        '123 Test rd', 
         'TestCity', 
         'TestState', 
         '12345', 
