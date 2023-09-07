@@ -5,14 +5,12 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, UserHousehold, Household, SellerExpertise, OwnershipOccupancy, Associations, Roof, Basement, RoleType, FrequencyType, AssociationType
 from sqlalchemy.exc import IntegrityError
 
-# API_BASE_URL = "URL"
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
-
 app.app_context().push()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_2_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ikutdzmyyrgrzr:b3724cf152c912547d5f304ae3ec438634cd6d6ab1289e92c5134dfd46bce8b0@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dfh6rk16a5so1v'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -21,11 +19,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
-
-# Remove SECRET_KEY for Production
-app.config['SECRET_KEY'] = "SuperSecret"
-
-
 
 ############################## AUTH ROUTES ##############################
 
