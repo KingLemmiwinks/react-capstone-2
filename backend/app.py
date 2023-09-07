@@ -1,4 +1,3 @@
-# from flask_cors import CORS
 import os
 from flask import Flask, session, flash, g, request, json
 from flask_debugtoolbar import DebugToolbarExtension
