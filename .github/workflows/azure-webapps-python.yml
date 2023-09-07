@@ -31,12 +31,16 @@ on:
 permissions:
   contents: read
 
+
 jobs:
+  
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - uses: actions/checkout@v3
+
+      - working-directory: backend
 
       - name: Set up Python version
         uses: actions/setup-python@v3.0.0
